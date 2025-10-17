@@ -1,0 +1,55 @@
+# =========================
+# PYTHON BACKEND
+# =========================
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+backend/.venv/
+backend/venv/
+.env
+backend/.env
+.env.*
+!backend/.env.example
+
+# Logs
+*.log
+
+# =========================
+# FRONTEND (React / Vite / TypeScript)
+# =========================
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# =========================
+# SYSTEM & IDE FILES
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# =========================
+# TESTS / TEMP FILES
+# =========================
+coverage/
+pytest_cache/
+*.tmp
+*.bak
+
+# =========================
+# LOCAL FILES
+# =========================
+requirements.txt~*

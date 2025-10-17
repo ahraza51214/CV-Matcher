@@ -1,0 +1,77 @@
+:root {
+  --bg1: #0f1623;
+  --bg2: #1b2434;
+  --card: #ffffff;
+  --text: #0b1220;
+  --muted: #6b7280;
+  --brand: #0ea5e9; /* azure-ish accent */
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: var(--text);
+  background: radial-gradient(1200px 600px at 20% 10%, #1c2740 0%, var(--bg1) 35%, var(--bg2) 100%);
+}
+
+.app-shell {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 28px; color: #e5eefc;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .3px;
+}
+.brand-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: linear-gradient(135deg, #4cc9f0, #4361ee);
+}
+.header small { opacity: .85; font-weight: 500; }
+
+.center {
+  display: grid; place-items: center; padding: 32px 16px;
+}
+
+.card {
+  width: 680px; max-width: calc(100vw - 32px);
+  background: var(--card); border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,.18);
+  padding: 28px;
+}
+
+.card h1 { margin: 8px 0 18px; text-align: center; font-size: 32px; }
+
+.field {
+  border: 2px solid #eef1f6; border-radius: 14px; padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px; background: #f9fbff;
+}
+.field + .field { margin-top: 14px; }
+.field .icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: grid; place-items: center;
+  background: #e9f6ff; color: #1166dd; font-size: 16px;
+}
+.field label { flex: 1; color: #0b1220; font-weight: 600; }
+.field input[type="file"] { display: none; }
+
+.browse {
+  border: 1px dashed #c9d3e8; background: #fff; color: #334155;
+  padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
+}
+
+.cta {
+  margin-top: 18px; width: 100%; padding: 16px 18px;
+  background: #2b3242; color: #fff; border: none; border-radius: 16px;
+  font-weight: 700; font-size: 16px; cursor: pointer;
+}
+.cta:disabled { opacity: .6; cursor: not-allowed; }
+
+.footer {
+  color: #c6d0e6; text-align: center; padding: 24px 0; font-size: 14px;
+}
