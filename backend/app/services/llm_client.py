@@ -37,6 +37,10 @@ async def chat_json(system: str, user: str) -> dict:
                 json={
                     "model": settings.chat_model,
                     "response_format": {"type": "json_object"},
+                    # ⬇️ added for consistency & cost control
+                    "max_tokens": 500,     # cap output size (enough for our JSON)
+                    "temperature": 0.4,    # a touch of nuance (0.2 if you want stricter)
+                    "seed": 7,             # improves repeatability for same inputs
                     "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": user}

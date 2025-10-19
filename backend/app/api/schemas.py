@@ -1,12 +1,17 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List, Optional
 
+class Explanations(BaseModel):
+    reasoning: Optional[str] = None
+    mustHaveCoverage: Optional[float] = None
+    niceToHaveCoverage: Optional[float] = None
+    overallFit: Optional[float] = None
+    embeddingsSim: Optional[float] = None  # may be unused in single-call flow
 
-'''Purpose: Define what data the API sends back (and could validate incoming data too).'''
 class MatchResponse(BaseModel):
     matchScore: int
     band: str
     pros: List[str]
     cons: List[str]
     missingSkills: List[str]
-    explanations: Dict[str, float]
+    explanations: Explanations

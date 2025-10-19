@@ -1,70 +1,49 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from ..services.pdf_reader import read_pdf
-from ..services.llm_client import embed_pair_cosine, chat_json
-from ..services.prompting import STRUCTURE_SYS, PROSCONS_SYS, STRUCTURE_USER, PROSCONS_USER
-from ..domain.scoring import compute_score
-from .schemas import MatchResponse
+from ..services.llm_client import chat_json
+from ..services.prompting import SIMPLE_SYS as SINGLE_EVAL_SYS, SIMPLE_USER as SINGLE_EVAL_USER
+from .schemas import MatchResponse, Explanations
 
 router = APIRouter()
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
-# ... (other imports unchanged)
-
 @router.post("/match", response_model=MatchResponse)
 async def match(cv: UploadFile = File(...), jd: UploadFile = File(...)):
+    cv_text = read_pdf(cv.file)
+    jd_text = read_pdf(jd.file)
+    if not cv_text.strip():
+        raise HTTPException(400, detail="CV appears empty after parsing (scanned PDF?).")
+    if not jd_text.strip():
+        raise HTTPException(400, detail="Job description appears empty after parsing (scanned PDF?).")
+
     try:
-        cv_text = read_pdf(cv.file)
-        jd_text = read_pdf(jd.file)
-        if not cv_text.strip():
-            raise HTTPException(400, detail="CV appears empty after parsing (scanned PDF?).")
-        if not jd_text.strip():
-            raise HTTPException(400, detail="Job description appears empty after parsing (scanned PDF?).")
-
-        # structure
-        try:
-            cv_json = await chat_json(STRUCTURE_SYS, STRUCTURE_USER("CV", cv_text))
-            jd_json = await chat_json(STRUCTURE_SYS, STRUCTURE_USER("JD", jd_text))
-        except RuntimeError as e:
-            # contains status code and provider message
-            raise HTTPException(status_code=502, detail=str(e))
-
-        # similarity
-        try:
-            sim = await embed_pair_cosine(cv_json.get("summary",""), jd_json.get("summary",""))
-        except RuntimeError as e:
-            raise HTTPException(status_code=502, detail=str(e))
-
-        # score + pros/cons
-        scored = compute_score(cv_json, jd_json, sim)
-
-        try:
-            pc = await chat_json(PROSCONS_SYS, PROSCONS_USER(cv_json, jd_json))
-        except RuntimeError as e:
-            # don’t fail whole request; return partial with reason
-            pc = {"pros": [], "cons": [f"Pros/cons generation failed: {e}"], "missingSkills": []}
-
-        return MatchResponse(
-            matchScore=scored["matchScore"],
-            band=scored["band"],
-            pros=pc.get("pros", []),
-            cons=pc.get("cons", []),
-            missingSkills=pc.get("missingSkills", []),
-            explanations=scored["explanations"]
-        )
-
-    except HTTPException:
-        raise
+        data = await chat_json(SINGLE_EVAL_SYS, SINGLE_EVAL_USER(cv_text, jd_text))
     except Exception as e:
-        # catch-all for anything else
-        raise HTTPException(status_code=500, detail=f"Unexpected error: {e}")
+        raise HTTPException(502, detail=f"AI evaluation failed: {e}")
 
-@router.get("/diag")
-async def diag():
+    # Defensive reads with defaults
+    expl = data.get("explanations", {}) or {}
+    explanations = Explanations(
+        reasoning=expl.get("reasoning"),
+        mustHaveCoverage=_num(expl.get("mustHaveCoverage")),
+        niceToHaveCoverage=_num(expl.get("niceToHaveCoverage")),
+        overallFit=_num(expl.get("overallFit")),
+        embeddingsSim=_num(expl.get("embeddingsSim")),
+    )
+
+    return MatchResponse(
+        matchScore=int(data.get("matchScore", 0)),
+        band=str(data.get("band", "Poor")),
+        pros=list(data.get("pros", []) or []),
+        cons=list(data.get("cons", []) or []),
+        missingSkills=list(data.get("missingSkills", []) or []),
+        explanations=explanations,
+    )
+
+def _num(x):
+    """Coerce values like '0.85' -> 0.85, None -> None."""
+    if x is None:
+        return None
     try:
-        # tiny sanity calls
-        _ = await chat_json("You must output STRICT JSON only.", '{"ping":"pong"}')
-        _ = await embed_pair_cosine("hello", "hello")
-        return {"ok": True}
-    except Exception as e:
-        # surface exact provider error
-        raise HTTPException(status_code=502, detail=str(e))
+        return float(x)
+    except (TypeError, ValueError):
+        return None

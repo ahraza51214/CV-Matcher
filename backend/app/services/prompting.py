@@ -1,32 +1,30 @@
-import json
+# SUPER-SIMPLE ONE-CALL PROMPT
 
-STRUCTURE_SYS = "Extract structured hiring signals. Output STRICT JSON only."
+SIMPLE_SYS = (
+    "You are an experienced recruiter. "
+    "Evaluate how well a candidate CV matches a job description on a 0-100 scale. "
+    "Return STRICT JSON only (no prose)."
+)
 
-def STRUCTURE_USER(doc_type: str, content: str) -> str:
-    return f'''DocumentType: "{doc_type}"
-Return JSON with:
-{{"summary":"2–3 sentence summary",
- "skills":[{{"name":"C#","years":4}}],
- "tools":["Azure","Docker"],
- "languages":[{{"name":"English","level":"C1"}}],
- "education":[{{"degree":"MSc","institution":"..."}}],
- "certifications":[],
- "domains":[],
- "locations":[],
- "mustHaves":[],
- "niceToHaves":[],
- "requiredYears":{{}},
- "seniority":"Junior|Mid|Senior|Lead"}}
-Text:
-"""{content[:12000]}"""'''
+def SIMPLE_USER(cv_text: str, jd_text: str) -> str:
+    cv_text = (cv_text or "")[:15000]
+    jd_text = (jd_text or "")[:15000]
+    return f'''
+On a scale from 0 to 100, tell me how good of a match this CV is to the job description.
 
-PROSCONS_SYS = "You are a hiring evaluator. Output STRICT JSON only."
+Return only this JSON object:
 
-def PROSCONS_USER(cv_json: dict, jd_json: dict) -> str:
-    return f'''Given:
-CV_JSON: {json.dumps(cv_json, ensure_ascii=False)}
-JD_JSON: {json.dumps(jd_json, ensure_ascii=False)}
-Rules:
-- Pros = concrete overlaps (skills, tools, domains).
-- Cons = genuine gaps. Each bullet < 14 words.
-Return: {{"pros":[],"cons":[],"missingSkills":[]}}'''
+{{
+  "matchScore": 0,
+  "band": "Poor|OK|Good|Strong",
+  "pros": ["..."],     // short concrete strengths
+  "cons": ["..."],     // short concrete gaps
+  "reasoning": "1-2 sentence explanation"
+}}
+
+--- JOB DESCRIPTION ---
+\"\"\"{jd_text}\"\"\"
+
+--- CV ---
+\"\"\"{cv_text}\"\"\"
+'''
