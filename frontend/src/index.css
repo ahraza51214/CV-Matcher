@@ -329,3 +329,74 @@ body{
   font-size: 13px;
   padding-bottom: 16px;
 }
+
+
+/* Modern centered score bubble */
+.score-bubble {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.14),
+              inset 0 -10px 18px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(6px);
+  isolation: isolate;
+}
+
+/* Glow ring (same as before) */
+.score-bubble--modern::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 220deg,
+    color-mix(in oklab, var(--sb-accent, #22e1ff) 70%, transparent) 0%,
+    transparent 30%,
+    color-mix(in oklab, var(--sb-accent, #22e1ff) 70%, transparent) 100%
+  );
+  filter: blur(10px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.score-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-2px);
+}
+
+.score-number {
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1.1;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.score-denom {
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.score-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.95;
+  margin-top: 4px;
+}
+ 

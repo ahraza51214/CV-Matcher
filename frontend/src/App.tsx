@@ -56,7 +56,13 @@ export default function App() {
               initial={{ opacity: 0, x: 28, filter: "blur(14px)" }}
               animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, x: 28, filter: "blur(14px)" }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
+              transition={{
+                duration: 0.9,
+                ease: [0.25, 0.1, 0.25, 1], // smooth cubic-bezier easing
+                opacity: { duration: 1.1 },
+                filter: { duration: 0.8 },
+                x: { duration: 0.8 },
+              }}
             >
               <ResultPanel result={result} loading={loading} error={error} />
             </motion.div>
