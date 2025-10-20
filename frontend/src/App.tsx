@@ -1,60 +1,117 @@
 import { useState } from "react";
-import Header from "./components/Header";
-import UploadCard from "./components/UploadCard";
-import Footer from "./components/Footer";
-import ResultPanel from "./components/ResultPanel";
-import { uploadAndScore } from "./api/match";
-import type { MatchResponse } from "./api/types";
+import { Header } from "./components/Header";
+import { UploadCard } from "./components/UploadCard";
+import { ResultPanel } from "./components/ResultPanel";
+import { Footer } from "./components/Footer";
+import {
+  motion,
+  AnimatePresence,
+  type Variants,
+  type Transition,
+} from "framer-motion";
+import { evaluateUpload, type Provider, type MatchResponse } from "./api/match";
 
 export default function App() {
-  const [jd, setJd] = useState<File | null>(null);
-  const [cv, setCv] = useState<File | null>(null);
+  const [provider, setProvider] = useState<Provider>("OpenAI");
+
+  // Files
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [jdFile, setJdFile] = useState<File | null>(null);
+
+  // Result + UI
+  const [result, setResult] = useState<MatchResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<MatchResponse | null>(null);
+  const [started, setStarted] = useState(false); // controls layout transition
 
-  const canStart = Boolean(jd && cv);
+  function getErrorMessage(err: unknown): string {
+    if (err instanceof Error) return err.message;
+    if (typeof err === "string") return err;
+    return "Unexpected error occurred.";
+  }
 
-  const handleStart = async () => {
-    if (!jd || !cv) return;
+  async function onEvaluate(): Promise<void> {
     setError(null);
     setResult(null);
+    setStarted(true); // reveal results column + trigger layout shift
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const data = await uploadAndScore(cv, jd, "en");
-      setResult(data);
-    } catch (e: any) {
-      setError(e?.response?.data?.detail || "Scoring failed");
+      if (!cvFile || !jdFile) {
+        throw new Error("Please upload both CV and Job Description (PDF/DOCX).");
+      }
+      const resp = await evaluateUpload(provider, cvFile, jdFile);
+      setResult(resp);
+    } catch (e: unknown) {
+      setError(getErrorMessage(e));
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="app-shell">
-      <Header />
-      <div className="center">
-        <div>
+    <div className="container">
+      <Header provider={provider} onChangeProvider={setProvider} />
+
+      {/* Stage switches from centered → split grid */}
+      <motion.div
+        className={`stage ${started ? "stage--split" : "stage--center"}`}
+        animate={started ? "split" : "center"}
+        initial={false}
+        variants={stageVariants}
+      >
+        {/* Upload Panel */}
+        <motion.div
+          layout
+          layoutId="panel-upload"
+          className="card"
+          variants={panelVariants}
+          animate={started ? "left" : "center"}
+          transition={spring}
+        >
           <UploadCard
-            onPickJD={setJd}
-            onPickCV={setCv}
-            onStart={handleStart}
-            disabled={!canStart || loading}
+            cvFile={cvFile}
+            jdFile={jdFile}
+            onCvFileChange={setCvFile}
+            onJdFileChange={setJdFile}
+            onEvaluate={onEvaluate}
+            loading={loading}
           />
-          {loading && (
-            <div className="card" style={{ marginTop: 16, textAlign: "center" }}>
-              Scoring… please wait
-            </div>
+        </motion.div>
+
+        {/* Results Panel (hidden until Evaluate pressed) */}
+        <AnimatePresence mode="wait">
+          {started && (
+            <motion.div
+              key="results"
+              layout
+              layoutId="panel-result"
+              className="card"
+              initial={{ opacity: 0, x: 28, filter: "blur(14px)" }}
+              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: 28, filter: "blur(14px)" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ResultPanel result={result} loading={loading} error={error} />
+            </motion.div>
           )}
-          {error && (
-            <div className="card" style={{ marginTop: 16, color: "#b91c1c" }}>
-              {error}
-            </div>
-          )}
-          {result && <ResultPanel data={result} />}
-        </div>
-      </div>
+        </AnimatePresence>
+      </motion.div>
+
       <Footer />
     </div>
   );
 }
+
+/* -------- Motion presets (typed) -------- */
+const spring: Transition = { type: "spring", stiffness: 240, damping: 24 };
+
+const stageVariants: Variants = {
+  center: { transition: { when: "beforeChildren" as const } },
+  split: { transition: { when: "beforeChildren" as const } },
+};
+
+const panelVariants: Variants = {
+  center: { x: 0, scale: 1, transition: spring },
+  left: { x: 0, scale: 1, transition: spring }, // grid handles placement; spring keeps it snappy
+};

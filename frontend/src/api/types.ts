@@ -1,8 +1,10 @@
+export type Provider = "OpenAI" | "Gemini";
+
 export type MatchResponse = {
   matchScore: number;
   band: string;
   pros: string[];
   cons: string[];
-  missingSkills: string[];
-  explanations: Record<string, number>;
+  reasoning?: string | null;
+  meta?: Record<string, unknown>;
 };

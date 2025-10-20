@@ -1,7 +1,7 @@
-export default function Footer() {
+export function Footer(){
   return (
-    <footer className="footer">
-      © {new Date().getFullYear()} COMPASS HR Group. All rights reserved.
-    </footer>
+    <div style={{textAlign:"center", marginTop:32, opacity:.6, fontSize:12}}>
+      DEEP AI Job Match.
+    </div>
   );
 }

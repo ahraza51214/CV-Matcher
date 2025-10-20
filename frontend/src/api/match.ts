@@ -1,14 +1,27 @@
-import { api } from "./client";
-import type { MatchResponse } from "./types";
+import { BASE_URL } from "./client";
 
-export async function uploadAndScore(cv: File, jd: File, lang = "en"): Promise<MatchResponse> {
-  const form = new FormData();
-  form.append("cv", cv);
-  form.append("jd", jd);
-  form.append("lang", lang);
+export type Provider = "OpenAI" | "Gemini";
 
-  const res = await api.post<MatchResponse>("/match", form, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-  return res.data;
+export type MatchResponse = {
+  matchScore: number;
+  band: string;
+  pros: string[];
+  cons: string[];
+  reasoning?: string | null;
+  meta?: Record<string, number>;
+};
+
+export async function evaluateUpload(
+  provider: Provider,
+  cvFile: File,
+  jdFile: File
+): Promise<MatchResponse> {
+  const fd = new FormData();
+  fd.append("cv", cvFile);
+  fd.append("jd", jdFile);
+
+  const url = `${BASE_URL}/match?provider=${encodeURIComponent(provider)}`;
+  const res = await fetch(url, { method: "POST", body: fd });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
 }
