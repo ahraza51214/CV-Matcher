@@ -1,15 +1,5 @@
 import { BASE_URL } from "./client";
-
-export type Provider = "OpenAI" | "Gemini";
-
-export type MatchResponse = {
-  matchScore: number;
-  band: string;
-  pros: string[];
-  cons: string[];
-  reasoning?: string | null;
-  meta?: Record<string, number>;
-};
+import type { Provider, MatchResponse } from "./types";
 
 export async function evaluateUpload(
   provider: Provider,
@@ -20,8 +10,10 @@ export async function evaluateUpload(
   fd.append("cv", cvFile);
   fd.append("jd", jdFile);
 
-  const url = `${BASE_URL}/match?provider=${encodeURIComponent(provider)}`;
-  const res = await fetch(url, { method: "POST", body: fd });
+  const res = await fetch(`${BASE_URL}/match?provider=${encodeURIComponent(provider)}`, {
+    method: "POST",
+    body: fd,
+  });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }

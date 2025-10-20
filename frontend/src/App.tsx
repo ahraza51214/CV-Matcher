@@ -1,66 +1,33 @@
 import { useState } from "react";
-import { Header } from "./components/Header";
-import { UploadCard } from "./components/UploadCard";
-import { ResultPanel } from "./components/ResultPanel";
-import { Footer } from "./components/Footer";
-import {
-  motion,
-  AnimatePresence,
-  type Variants,
-  type Transition,
-} from "framer-motion";
-import { evaluateUpload, type Provider, type MatchResponse } from "./api/match";
+import { motion, AnimatePresence } from "framer-motion";
+
+import { Header } from "./components/layout/Header";
+import { Footer } from "./components/layout/Footer";
+import { UploadPanel } from "./components/upload/UploadPanel";
+import { ResultPanel } from "./components/result/ResultPanel";
+
+import { useUploadState } from "./hooks/useUploadState";
+import { useEvaluation } from "./hooks/useEvaluation";
+import { stageVariants, panelVariants, spring } from "./motion/presets";
+
+import type { Provider } from "./api/types";
+
 
 export default function App() {
   const [provider, setProvider] = useState<Provider>("OpenAI");
-
-  // Files
-  const [cvFile, setCvFile] = useState<File | null>(null);
-  const [jdFile, setJdFile] = useState<File | null>(null);
-
-  // Result + UI
-  const [result, setResult] = useState<MatchResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [started, setStarted] = useState(false); // controls layout transition
-
-  function getErrorMessage(err: unknown): string {
-    if (err instanceof Error) return err.message;
-    if (typeof err === "string") return err;
-    return "Unexpected error occurred.";
-  }
-
-  async function onEvaluate(): Promise<void> {
-    setError(null);
-    setResult(null);
-    setStarted(true); // reveal results column + trigger layout shift
-    setLoading(true);
-
-    try {
-      if (!cvFile || !jdFile) {
-        throw new Error("Please upload both CV and Job Description (PDF/DOCX).");
-      }
-      const resp = await evaluateUpload(provider, cvFile, jdFile);
-      setResult(resp);
-    } catch (e: unknown) {
-      setError(getErrorMessage(e));
-    } finally {
-      setLoading(false);
-    }
-  }
+  const { cvFile, jdFile, setCvFile, setJdFile } = useUploadState();
+  const { result, loading, error, started, run } = useEvaluation(provider);
 
   return (
     <div className="container">
       <Header provider={provider} onChangeProvider={setProvider} />
 
-      {/* Stage switches from centered → split grid */}
       <motion.div
         className={`stage ${started ? "stage--split" : "stage--center"}`}
         animate={started ? "split" : "center"}
         initial={false}
         variants={stageVariants}
       >
-        {/* Upload Panel */}
         <motion.div
           layout
           layoutId="panel-upload"
@@ -69,17 +36,16 @@ export default function App() {
           animate={started ? "left" : "center"}
           transition={spring}
         >
-          <UploadCard
+          <UploadPanel
             cvFile={cvFile}
             jdFile={jdFile}
-            onCvFileChange={setCvFile}
-            onJdFileChange={setJdFile}
-            onEvaluate={onEvaluate}
+            onCv={setCvFile}
+            onJd={setJdFile}
+            onEvaluate={() => run(cvFile, jdFile)}
             loading={loading}
           />
         </motion.div>
 
-        {/* Results Panel (hidden until Evaluate pressed) */}
         <AnimatePresence mode="wait">
           {started && (
             <motion.div
@@ -102,16 +68,3 @@ export default function App() {
     </div>
   );
 }
-
-/* -------- Motion presets (typed) -------- */
-const spring: Transition = { type: "spring", stiffness: 240, damping: 24 };
-
-const stageVariants: Variants = {
-  center: { transition: { when: "beforeChildren" as const } },
-  split: { transition: { when: "beforeChildren" as const } },
-};
-
-const panelVariants: Variants = {
-  center: { x: 0, scale: 1, transition: spring },
-  left: { x: 0, scale: 1, transition: spring }, // grid handles placement; spring keeps it snappy
-};

@@ -1,9 +1,14 @@
+/* ------------------------------
+   Design tokens
+------------------------------ */
 :root{
   --bg: #0b0d12;
   --bg-soft: #0f1218;
+
   --card: rgba(255,255,255,0.06);
   --card-hover: rgba(255,255,255,0.10);
   --border: rgba(255,255,255,0.12);
+
   --text: #e8ecf1;
   --muted: #a2a9b3;
 
@@ -14,6 +19,7 @@
   --radius-xl: 20px;
   --radius-lg: 14px;
   --radius-md: 10px;
+
   --shadow-1: 0 10px 30px rgba(0,0,0,.35);
   --shadow-2: 0 20px 50px rgba(0,0,0,.45);
 
@@ -25,8 +31,12 @@
   --gap-6: 48px;
 }
 
+/* ------------------------------
+   Base
+------------------------------ */
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
+
 body{
   margin:0;
   color: var(--text);
@@ -43,6 +53,9 @@ body{
   padding: 24px;
 }
 
+/* ------------------------------
+   Card & utility classes
+------------------------------ */
 .card{
   background: var(--card);
   backdrop-filter: blur(10px);
@@ -56,6 +69,7 @@ body{
 .bordered{ border:1px solid var(--border); border-radius: var(--radius-lg); }
 .muted{ color: var(--muted); }
 
+/* Buttons */
 .btn{
   appearance:none;
   border:1px solid var(--border);
@@ -64,9 +78,15 @@ body{
   padding: 10px 16px;
   border-radius: 12px;
   cursor:pointer;
-  transition: all .2s ease;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
 }
 .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.25); }
+.btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34,225,255,.25);
+  border-color: rgba(34,225,255,.6);
+}
+
 .btn.primary{
   border:none;
   background: linear-gradient(90deg, var(--brand-3), var(--brand-2));
@@ -75,7 +95,22 @@ body{
   box-shadow: 0 10px 20px rgba(34,225,255,.15);
 }
 
-/* Segmented control */
+/* Big CTA */
+.big-btn{
+  font-size: 18px;
+  padding: 14px 26px;
+  border-radius: 16px;
+  min-width: 200px;
+  box-shadow: 0 14px 28px rgba(34,225,255,.16);
+}
+.big-btn:disabled,
+.big-btn.big-btn-disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Segmented control (if used elsewhere) */
 .segment{
   display:inline-flex;
   padding: 6px;
@@ -97,32 +132,9 @@ body{
   font-weight: 600;
 }
 
-/* Upload dropzone */
-.dropzone{
-  border:1px dashed rgba(255,255,255,.25);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  text-align: center;
-  background: rgba(255,255,255,.03);
-  transition: border-color .2s ease, background .2s ease;
-}
-.dropzone:hover{ border-color: var(--brand-3); background: rgba(34,225,255,.05); }
-
-/* Two-column grid */
-.grid{
-  display:grid; gap: var(--gap-5);
-  grid-template-columns: 1.2fr .8fr;
-}
-@media (max-width: 960px){ .grid{ grid-template-columns: 1fr; } }
-
-/* Gauge */
-.gauge{
-  width: 180px; height: 180px;
-}
-.gauge text{ font-weight: 700; font-size: 28px; fill: var(--text); }
-.gauge .label{ font-size: 12px; fill: var(--muted); }
-
-/* Header */
+/* ------------------------------
+   Header micro bits (used by Header)
+------------------------------ */
 .header{
   display:flex; align-items:center; justify-content:space-between;
   gap: var(--gap-4); margin-bottom: var(--gap-5);
@@ -136,7 +148,9 @@ body{
   box-shadow: 0 10px 20px rgba(154,107,255,.3);
 }
 
-/* ---------- Modern drag & drop ---------- */
+/* ------------------------------
+   Modern drag & drop (UploadPanel)
+------------------------------ */
 .dz{
   position: relative;
   border: 1px dashed rgba(255,255,255,.22);
@@ -152,14 +166,13 @@ body{
   border-color: rgba(255,255,255,.35);
   background: rgba(255,255,255,.05);
 }
+.dz:focus-within{ box-shadow: 0 0 0 3px rgba(34,225,255,.25); border-color: rgba(34,225,255,.6); }
 .dz.active{
   border-color: var(--brand-3);
   box-shadow: 0 0 0 6px rgba(34,225,255,.08), 0 10px 30px rgba(34,225,255,.12);
   transform: translateY(-1px);
 }
-.dz-inner{
-  text-align: center;
-}
+.dz-inner{ text-align: center; }
 .dz-icon{
   width: 34px; height: 34px;
   display: inline-grid; place-items: center;
@@ -168,15 +181,9 @@ body{
   box-shadow: 0 10px 22px rgba(154,107,255,.25);
   margin: 4px auto 10px;
 }
-.dz-title{
-  font-weight: 700; letter-spacing: .2px;
-}
-.dz-sub{
-  font-size: 12px; color: var(--muted);
-}
-.linklike{
-  text-decoration: underline; text-underline-offset: 3px;
-}
+.dz-title{ font-weight: 700; letter-spacing: .2px; }
+.dz-sub{ font-size: 12px; color: var(--muted); }
+.linklike{ text-decoration: underline; text-underline-offset: 3px; }
 
 /* File pill */
 .file-pill{
@@ -188,9 +195,7 @@ body{
   border: 1px solid var(--border);
   background: rgba(255,255,255,.05);
 }
-.file-left{
-  display: flex; align-items: center; gap: 10px; min-width: 0;
-}
+.file-left{ display: flex; align-items: center; gap: 10px; min-width: 0; }
 .file-icon{
   width: 26px; height: 26px; border-radius: 8px;
   display: grid; place-items: center;
@@ -200,9 +205,7 @@ body{
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   max-width: 360px;
 }
-.file-size{
-  font-size: 12px; color: var(--muted);
-}
+.file-size{ font-size: 12px; color: var(--muted); }
 .file-x{
   appearance: none; border: none; cursor: pointer;
   width: 28px; height: 28px; border-radius: 8px;
@@ -217,7 +220,7 @@ body{
   transform: scale(1.03);
 }
 
-/* micro UI bits */
+/* Micro UI bits */
 .kbd{
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 12px;
@@ -226,26 +229,34 @@ body{
   padding: 1px 6px; border-radius: 6px;
   background: rgba(255,255,255,.05);
 }
-.hint{
-  color: var(--muted); font-size: 12px;
+.hint{ color: var(--muted); font-size: 12px; }
+
+/* ------------------------------
+   Stage layout (center → split)
+------------------------------ */
+.stage{
+  display: grid;
+  gap: var(--gap-5);
+  transition: grid-template-columns .45s ease, max-width .45s ease, margin .45s ease;
+}
+.stage--center{
+  grid-template-columns: 1fr;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.stage--split{
+  grid-template-columns: 1.15fr .85fr;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+/* soft glow for results card when visible */
+.stage--split .card:last-child{
+  box-shadow: 0 20px 50px rgba(154,107,255,.15), var(--shadow-1);
 }
 
-/* Big CTA */
-.big-btn{
-  font-size: 18px;
-  padding: 14px 26px;
-  border-radius: 16px;
-  min-width: 200px;
-  box-shadow: 0 14px 28px rgba(34,225,255,.16);
-}
-.big-btn:disabled,
-.big-btn.big-btn-disabled{
-  opacity: .55;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* Thinking animation */
+/* ------------------------------
+   Thinking animation (ResultPanel)
+------------------------------ */
 .thinking-wrap{
   position: absolute;
   inset: 0;
@@ -270,64 +281,51 @@ body{
   margin-top: 14px; color: var(--muted); text-align: center; font-weight: 600;
 }
 
-/* Score bubble */
-.score-bubble{
-  position: absolute;
-  width: 110px; height: 110px;
-  border-radius: 24px;
-  display: grid; place-items: center;
-  color: #0b0d12;
-  box-shadow: var(--shadow-2);
-  border: 1px solid rgba(255,255,255,.12);
-}
-.score-number{
-  font-size: 34px; font-weight: 900; line-height: 1;
-}
-.score-label{
-  font-size: 11px; letter-spacing: .8px; text-transform: uppercase; opacity: .8;
-}
-
-/* Stage layout: centered → split */
-.stage{
-  display: grid;
-  gap: var(--gap-5);
-  transition: grid-template-columns .45s ease, max-width .45s ease, margin .45s ease;
-}
-.stage--center{
-  grid-template-columns: 1fr;
-  max-width: 760px;
-  margin: 0 auto;
-}
-.stage--split{
-  grid-template-columns: 1.15fr .85fr;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* Optional: add a soft glow to the right card when it appears */
-.stage--split .card:last-child{
-  box-shadow: 0 20px 50px rgba(154,107,255,.15), var(--shadow-1);
-}
-
-
-/* Score bubble – now a clean circle */
+/* ------------------------------
+   Score bubble (ResultPanel)
+------------------------------ */
 .score-bubble{
   position: absolute;
   width: 110px; height: 110px;
   border-radius: 50%;
   display: grid; place-items: center;
   box-shadow: var(--shadow-2);
-  border: 1px solid rgba(255,255,255,.12); /* overwritten inline with color.border */
+  border: 1px solid rgba(255,255,255,.12); /* inline border color overrides this */
+}
+.score-number{ font-size: 32px; font-weight: 900; line-height: 1; }
+.score-denom{ font-size: 12px; font-weight: 700; opacity: .85; margin-left: 4px; }
+.score-label{ font-size: 11px; letter-spacing: .8px; text-transform: uppercase; opacity: .9; }
+
+/* ------------------------------
+   Accessibility / motion prefs
+------------------------------ */
+@media (prefers-reduced-motion: reduce){
+  * { transition: none !important; animation: none !important; }
 }
 
-.score-number{
-  font-size: 32px; font-weight: 900; line-height: 1;
-}
-.score-denom{
-  font-size: 12px; font-weight: 700; opacity: .85; margin-left: 4px;
-}
-.score-label{
-  font-size: 11px; letter-spacing: .8px; text-transform: uppercase; opacity: .9;
+/* ------------------------------
+   Layout alignment for Header & Footer
+------------------------------ */
+/* Header + Footer aligned to container width with vertical spacing */
+.header,
+.footer {
+  max-width: 1100px;   /* same as .container */
+  margin: 0 auto;
+  padding: 0 24px;     /* same as .container */
 }
 
-/* Thinking already defined earlier; no changes needed */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-4);
+  margin-bottom: var(--gap-6); /* <-- space between header and card */
+}
+
+.footer {
+  margin-top: var(--gap-6);    /* <-- space between card and footer */
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding-bottom: 16px;
+}
