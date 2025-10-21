@@ -400,3 +400,32 @@ body{
   margin-top: 4px;
 }
  
+/* Stage grid transitions match the timeline in presets.ts */
+.stage{
+  display: grid;
+  gap: var(--gap-5);
+  transition: grid-template-columns 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+              max-width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+              margin 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Ensure baseline stacking and a higher layer for result card */
+.card{ position: relative; z-index: 1; }
+.card--result{ z-index: 5; }   /* bump higher */
+.card--upload{ z-index: 1; }
+
+/* Panel close button: exactly same size & typography as .file-x */
+.panel-x{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+
+  width: 28px;           /* match .file-x */
+  height: 28px;          /* match .file-x */
+  display: grid;         /* ensure perfect centering */
+  place-items: center;
+  font-size: 18px;       /* tweak until it visually matches your pill “x” */
+  line-height: 1;
+}
+

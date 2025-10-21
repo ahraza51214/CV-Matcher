@@ -8,33 +8,57 @@ import { ResultPanel } from "./components/result/ResultPanel";
 
 import { useUploadState } from "./hooks/useUploadState";
 import { useEvaluation } from "./hooks/useEvaluation";
-import { stageVariants, panelVariants, spring } from "./motion/presets";
+import { usePanelsChoreography } from "./hooks/usePanelsChoreography";
+
+import {
+  stageVariants,
+  uploadSolid,
+  resultZoom,
+  timeline,
+} from "./motion/presets";
 
 import type { Provider } from "./api/types";
-
 
 export default function App() {
   const [provider, setProvider] = useState<Provider>("OpenAI");
   const { cvFile, jdFile, setCvFile, setJdFile } = useUploadState();
-  const { result, loading, error, started, run } = useEvaluation(provider);
+  const { result, loading, error, started, run, dismiss } = useEvaluation(provider);
+
+  // All the “closing/width-lock” choreography lives in this hook
+  const {
+    uploadRef,
+    lockWidthPx,
+    showResults,
+    stageClass,
+    stageAnimate,
+    uploadAnimate,
+    requestClose,
+    onExitComplete,
+  } = usePanelsChoreography(started, dismiss, 950);
 
   return (
     <div className="container">
       <Header provider={provider} onChangeProvider={setProvider} />
 
+      {/* Stage: center (only upload) → split (upload + results) */}
       <motion.div
-        className={`stage ${started ? "stage--split" : "stage--center"}`}
-        animate={started ? "split" : "center"}
+        className={`stage ${stageClass}`}
+        animate={stageAnimate}
         initial={false}
         variants={stageVariants}
       >
+        {/* Upload: solid translate. Width is locked during close to avoid morph */}
         <motion.div
-          layout
-          layoutId="panel-upload"
-          className="card"
-          variants={panelVariants}
-          animate={started ? "left" : "center"}
-          transition={spring}
+          ref={uploadRef}
+          className="card card--upload"
+          variants={uploadSolid}
+          animate={uploadAnimate}
+          transition={timeline}
+          style={{
+            willChange: "transform",
+            width: lockWidthPx != null ? `${lockWidthPx}px` : undefined,
+            flex: lockWidthPx != null ? ("0 0 auto" as const) : undefined,
+          }}
         >
           <UploadPanel
             cvFile={cvFile}
@@ -46,25 +70,24 @@ export default function App() {
           />
         </motion.div>
 
-        <AnimatePresence mode="wait">
-          {started && (
+        {/* Result: zooms in/out; grid collapses only after exit completes */}
+        <AnimatePresence mode="wait" onExitComplete={onExitComplete}>
+          {showResults && (
             <motion.div
               key="results"
-              layout
-              layoutId="panel-result"
-              className="card"
-              initial={{ opacity: 0, x: 28, filter: "blur(14px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: 28, filter: "blur(14px)" }}
-              transition={{
-                duration: 0.9,
-                ease: [0.25, 0.1, 0.25, 1], // smooth cubic-bezier easing
-                opacity: { duration: 1.1 },
-                filter: { duration: 0.8 },
-                x: { duration: 0.8 },
-              }}
+              className="card card--result"
+              initial={resultZoom.initial}
+              animate={resultZoom.animate}
+              exit={resultZoom.exit}
+              transition={resultZoom.transition}
+              style={{ willChange: "transform, filter, opacity" }}
             >
-              <ResultPanel result={result} loading={loading} error={error} />
+              <ResultPanel
+                result={result}
+                loading={loading}
+                error={error}
+                onClose={requestClose}
+              />
             </motion.div>
           )}
         </AnimatePresence>
