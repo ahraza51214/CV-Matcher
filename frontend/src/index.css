@@ -150,8 +150,16 @@ body{
 }
 
 .provider-toggle__btn--active{
-  background: rgba(255,255,255,.22);
-  color: #fff;
+  background: linear-gradient(90deg, var(--brand-3), var(--brand-2));
+  color: #081019;
+  border: none;
+  box-shadow: 0 10px 20px rgba(34,225,255,.15);
+}
+
+.provider-toggle__btn--active:hover{
+  background: linear-gradient(90deg, var(--brand-3), var(--brand-2));
+  color: #081019;
+  box-shadow: 0 10px 20px rgba(34,225,255,.15);
 }
 
 /* ------------------------------
