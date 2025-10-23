@@ -13,10 +13,12 @@ export const stageVariants: Variants = {
   split:  { transition: { when: "beforeChildren" as const } },
 };
 
+const uploadTransition: Transition = { ...timeline, duration: 1.25 };
+
 /** Upload panel: translate as one solid block (no stretchy layout morphing) */
 export const uploadSolid: Variants = {
-  center: { x: 0,   opacity: 1, filter: "blur(0px)", transition: timeline },
-  left:   { x: -36, opacity: 1, filter: "blur(0px)", transition: timeline },
+  center: { x: 0,   opacity: 1, filter: "blur(0px)", transition: uploadTransition },
+  left:   { x: -36, opacity: 1, filter: "blur(0px)", transition: uploadTransition },
 };
 
 /** Result panel: zoom from its final center (no lateral slide) */

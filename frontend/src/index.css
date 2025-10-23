@@ -484,19 +484,26 @@ body{
 .stage{
   display: grid;
   gap: var(--gap-5);
+  max-width: 1100px;
+  margin: 0 auto;
   transition: grid-template-columns 0.95s cubic-bezier(0.22, 1, 0.36, 1),
               max-width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
               margin 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .stage--center{
-  grid-template-columns: 1fr;
+  grid-template-columns: 1.15fr .85fr;
+}
+.stage--center .card--upload{
+  grid-column: 1 / span 2;
+  justify-self: center;
   max-width: 760px;
-  margin: 0 auto;
 }
 .stage--split{
   grid-template-columns: 1.15fr .85fr;
-  max-width: 1100px;
-  margin: 0 auto;
+}
+.stage--split .card--upload{
+  grid-column: 1;
+  justify-self: stretch;
 }
 .stage--split .card:last-child{
   box-shadow: 0 20px 50px rgba(154,107,255,.15), var(--shadow-1);

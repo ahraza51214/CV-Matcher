@@ -27,38 +27,33 @@ export default function App() {
   // All the “closing/width-lock” choreography lives in this hook
   const {
     uploadRef,
-    lockWidthPx,
     showResults,
     stageClass,
     stageAnimate,
     uploadAnimate,
     requestClose,
     onExitComplete,
-  } = usePanelsChoreography(started, dismiss, 950);
+  } = usePanelsChoreography(started, dismiss);
 
   return (
     <div className="container">
       <Header provider={provider} onChangeProvider={setProvider} />
 
-      {/* Stage: center (only upload) → split (upload + results) */}
-      <motion.div
-        className={`stage ${stageClass}`}
-        animate={stageAnimate}
-        initial={false}
-        variants={stageVariants}
-      >
-        {/* Upload: solid translate. Width is locked during close to avoid morph */}
+        {/* Stage: center (only upload) → split (upload + results) */}
         <motion.div
-          ref={uploadRef}
-          className="card card--upload"
-          variants={uploadSolid}
-          animate={uploadAnimate}
-          transition={timeline}
-          style={{
-            width: lockWidthPx != null ? `${lockWidthPx}px` : undefined,
-            flex: lockWidthPx != null ? ("0 0 auto" as const) : undefined,
-          }}
+          className={`stage ${stageClass}`}
+          animate={stageAnimate}
+          initial={false}
+          variants={stageVariants}
         >
+          {/* Upload: solid translate; width adjusts naturally with layout */}
+          <motion.div
+            ref={uploadRef}
+            className="card card--upload"
+            variants={uploadSolid}
+            animate={uploadAnimate}
+            transition={timeline}
+          >
           <UploadPanel
             cvFile={cvFile}
             jdFile={jdFile}
