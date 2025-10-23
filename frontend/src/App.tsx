@@ -55,7 +55,6 @@ export default function App() {
           animate={uploadAnimate}
           transition={timeline}
           style={{
-            willChange: "transform",
             width: lockWidthPx != null ? `${lockWidthPx}px` : undefined,
             flex: lockWidthPx != null ? ("0 0 auto" as const) : undefined,
           }}
@@ -80,7 +79,6 @@ export default function App() {
               animate={resultZoom.animate}
               exit={resultZoom.exit}
               transition={resultZoom.transition}
-              style={{ willChange: "transform, filter, opacity" }}
             >
               <ResultPanel
                 result={result}

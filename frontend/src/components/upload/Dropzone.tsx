@@ -19,28 +19,33 @@ export function Dropzone({ label, onPick, accept, children }: Props) {
   }, [onPick]);
 
   return (
-    <div style={{ display: "grid", gap: 8 }}>
-      <label className="muted" style={{ fontSize: 12 }}>{label}</label>
+    <div className="dropzone-field">
+      <label className="dropzone-field__label muted">{label}</label>
       <div
-        className={`dz ${active ? "active" : ""}`}
-        onDragEnter={(e)=>{e.preventDefault(); setActive(true);}}
-        onDragOver={(e)=>{e.preventDefault(); setActive(true);}}
-        onDragLeave={(e)=>{e.preventDefault(); setActive(false);}}
+        className={`dz${active ? " active" : ""}`}
+        onDragEnter={(e) => { e.preventDefault(); setActive(true); }}
+        onDragOver={(e) => { e.preventDefault(); setActive(true); }}
+        onDragLeave={(e) => { e.preventDefault(); setActive(false); }}
         onDrop={onDrop}
         onClick={pick}
         role="button"
         tabIndex={0}
-        onKeyDown={(e)=> (e.key === "Enter" || e.key === " ") && pick()}
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && pick()}
       >
         {children ?? (
           <div className="dz-inner">
-            <div className="dz-icon"><Upload size={18}/></div>
+            <div className="dz-icon"><Upload size={18} /></div>
             <div className="dz-title">Drop file here</div>
             <div className="dz-sub">or <span className="linklike">click to browse</span></div>
           </div>
         )}
-        <input ref={inputRef} type="file" accept={accept} style={{display:"none"}}
-               onChange={(e)=> onPick(e.target.files?.[0] ?? null)} />
+        <input
+          ref={inputRef}
+          className="dz-input"
+          type="file"
+          accept={accept}
+          onChange={(e) => onPick(e.target.files?.[0] ?? null)}
+        />
       </div>
     </div>
   );

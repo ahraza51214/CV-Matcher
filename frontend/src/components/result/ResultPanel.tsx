@@ -11,14 +11,14 @@ export function ResultPanel({
   result: MatchResponse | null;
   loading: boolean;
   error: string | null;
-  onClose?: () => void;              // ← add this
+  onClose?: () => void;
 }) {
   const hasResult = !!result && !loading && !error;
   const score = hasResult ? clamp0to100(result!.matchScore) : 0;
   const { bg, border, text, band } = scoreStyle(score);
 
   return (
-    <div style={{ padding: 24, position: "relative", minHeight: 320, overflow: "hidden" }}>
+    <div className="result-panel">
       {/* Close button identical to file “x” */}
       {onClose && (
         <button
@@ -31,10 +31,10 @@ export function ResultPanel({
         </button>
       )}
 
-      <h3 style={{ marginTop: 0, marginBottom: 12 }}>Match Result</h3>
-      {error && <div style={{ color: "#ff9aa2" }}>Error: {error}</div>}
+      <h3 className="result-panel__title">Match Result</h3>
+      {error && <div className="result-panel__error">Error: {error}</div>}
 
-      <div style={{ position: "relative" }}>
+      <div className="result-panel__body">
         <AnimatePresence mode="popLayout">
           {loading && !error && <Thinking />}
           {hasResult && (
@@ -42,16 +42,16 @@ export function ResultPanel({
           )}
         </AnimatePresence>
 
-        <div style={{ display: "grid", gap: 12 }}>
+        <div className="result-panel__sections">
           {hasResult && result?.reasoning && (
-            <div className="bordered" style={{ padding: 12, marginLeft: 140, marginTop: 6 }}>
+            <div className="bordered result-panel__reasoning">
               {result.reasoning}
             </div>
           )}
           {hasResult && <SectionCard title="Pros" items={result?.pros || []} />}
           {hasResult && <SectionCard title="Cons" items={result?.cons || []} />}
           {!loading && !error && !hasResult && (
-            <div className="muted" style={{ marginTop: 8 }}>Ready when you are.</div>
+            <div className="muted result-panel__placeholder">Ready when you are.</div>
           )}
         </div>
       </div>

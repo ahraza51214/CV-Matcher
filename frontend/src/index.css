@@ -3,7 +3,6 @@
 ------------------------------ */
 :root{
   --bg: #0b0d12;
-  --bg-soft: #0f1218;
 
   --card: rgba(255,255,255,0.06);
   --card-hover: rgba(255,255,255,0.10);
@@ -12,20 +11,14 @@
   --text: #e8ecf1;
   --muted: #a2a9b3;
 
-  --brand-1: #8aaaff;
   --brand-2: #9a6bff;
   --brand-3: #22e1ff;
 
   --radius-xl: 20px;
   --radius-lg: 14px;
-  --radius-md: 10px;
 
   --shadow-1: 0 10px 30px rgba(0,0,0,.35);
-  --shadow-2: 0 20px 50px rgba(0,0,0,.45);
 
-  --gap-1: 8px;
-  --gap-2: 12px;
-  --gap-3: 16px;
   --gap-4: 24px;
   --gap-5: 32px;
   --gap-6: 48px;
@@ -110,47 +103,106 @@ body{
   box-shadow: none;
 }
 
-/* Segmented control (if used elsewhere) */
-.segment{
-  display:inline-flex;
-  padding: 6px;
-  gap: 6px;
-  background: rgba(255,255,255,.06);
-  border:1px solid var(--border);
-  border-radius: 14px;
-}
-.segment button{
-  padding: 8px 12px;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--muted);
-  border:none; cursor:pointer;
-}
-.segment button.active{
-  color: #0b0d12;
-  background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
-  font-weight: 600;
+/* ------------------------------
+   Header & provider toggle
+------------------------------ */
+.brand{
+  display:flex; align-items:center; gap:12px;
+  margin: 0;
+  font-weight:700;
+  letter-spacing: .3px;
 }
 
-/* ------------------------------
-   Header micro bits (used by Header)
------------------------------- */
-.header{
-  display:flex; align-items:center; justify-content:space-between;
-  gap: var(--gap-4); margin-bottom: var(--gap-5);
+.header__title{
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
 }
-.brand{
-  display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing: .3px;
+
+.provider-toggle{
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
 }
-.brand-bubble{
-  width:36px; height:36px; border-radius: 10px;
-  background: radial-gradient(120% 120% at 10% 0%, var(--brand-3), var(--brand-2));
-  box-shadow: 0 10px 20px rgba(154,107,255,.3);
+
+.provider-toggle__btn{
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,.05);
+  color: rgba(255,255,255,.6);
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 500;
+  transition: background .2s ease, color .2s ease, transform .15s ease;
+}
+
+.provider-toggle__btn:hover{
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.provider-toggle__btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34,225,255,.25);
+}
+
+.provider-toggle__btn--active{
+  background: rgba(255,255,255,.22);
+  color: #fff;
 }
 
 /* ------------------------------
    Modern drag & drop (UploadPanel)
 ------------------------------ */
+.upload-panel{
+  padding: 24px;
+}
+
+.upload-panel__title{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.upload-panel__description{
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+
+.upload-panel__hint{
+  margin-top: 10px;
+}
+
+.evaluate-button{
+  display: grid;
+  place-items: center;
+  margin-top: 24px;
+}
+
+.spacer{
+  width: 100%;
+}
+
+.spacer--md{
+  height: 16px;
+}
+
+.dropzone-field{
+  display: grid;
+  gap: 8px;
+}
+
+.dropzone-field__label{
+  font-size: 12px;
+}
+
+.dz-input{
+  display: none;
+}
+
 .dz{
   position: relative;
   border: 1px dashed rgba(255,255,255,.22);
@@ -220,6 +272,60 @@ body{
   transform: scale(1.03);
 }
 
+.result-panel{
+  padding: 24px;
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.result-panel__title{
+  margin: 0 0 12px 0;
+}
+
+.result-panel__error{
+  color: #ff9aa2;
+  margin-bottom: 12px;
+}
+
+.result-panel__body{
+  position: relative;
+}
+
+.result-panel__sections{
+  display: grid;
+  gap: 12px;
+}
+
+.result-panel__reasoning{
+  padding: 12px;
+  margin-left: 140px;
+  margin-top: 6px;
+}
+
+.result-panel__placeholder{
+  margin-top: 8px;
+}
+
+.section-card{
+  padding: 12px;
+}
+
+.section-card__title{
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.section-card__empty{
+  font-size: 14px;
+}
+
+.section-card__list{
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
 /* Micro UI bits */
 .kbd{
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -232,29 +338,6 @@ body{
 .hint{ color: var(--muted); font-size: 12px; }
 
 /* ------------------------------
-   Stage layout (center → split)
------------------------------- */
-.stage{
-  display: grid;
-  gap: var(--gap-5);
-  transition: grid-template-columns .45s ease, max-width .45s ease, margin .45s ease;
-}
-.stage--center{
-  grid-template-columns: 1fr;
-  max-width: 760px;
-  margin: 0 auto;
-}
-.stage--split{
-  grid-template-columns: 1.15fr .85fr;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-/* soft glow for results card when visible */
-.stage--split .card:last-child{
-  box-shadow: 0 20px 50px rgba(154,107,255,.15), var(--shadow-1);
-}
-
-/* ------------------------------
    Thinking animation (ResultPanel)
 ------------------------------ */
 .thinking-wrap{
@@ -262,6 +345,10 @@ body{
   inset: 0;
   display: grid;
   place-items: center;
+}
+
+.thinking-wrap--min{
+  min-height: 180px;
 }
 .thinking-orb{
   width: 96px; height: 96px;
@@ -282,21 +369,6 @@ body{
 }
 
 /* ------------------------------
-   Score bubble (ResultPanel)
------------------------------- */
-.score-bubble{
-  position: absolute;
-  width: 110px; height: 110px;
-  border-radius: 50%;
-  display: grid; place-items: center;
-  box-shadow: var(--shadow-2);
-  border: 1px solid rgba(255,255,255,.12); /* inline border color overrides this */
-}
-.score-number{ font-size: 32px; font-weight: 900; line-height: 1; }
-.score-denom{ font-size: 12px; font-weight: 700; opacity: .85; margin-left: 4px; }
-.score-label{ font-size: 11px; letter-spacing: .8px; text-transform: uppercase; opacity: .9; }
-
-/* ------------------------------
    Accessibility / motion prefs
 ------------------------------ */
 @media (prefers-reduced-motion: reduce){
@@ -304,14 +376,13 @@ body{
 }
 
 /* ------------------------------
-   Layout alignment for Header & Footer
+   Header & footer layout
 ------------------------------ */
-/* Header + Footer aligned to container width with vertical spacing */
 .header,
 .footer {
-  max-width: 1100px;   /* same as .container */
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 24px;     /* same as .container */
+  padding: 0 24px;
 }
 
 .header {
@@ -319,19 +390,20 @@ body{
   align-items: center;
   justify-content: space-between;
   gap: var(--gap-4);
-  margin-bottom: var(--gap-6); /* <-- space between header and card */
+  margin-bottom: var(--gap-6);
 }
 
 .footer {
-  margin-top: var(--gap-6);    /* <-- space between card and footer */
+  margin-top: var(--gap-6);
   text-align: center;
   color: var(--muted);
   font-size: 13px;
   padding-bottom: 16px;
 }
 
-
-/* Modern centered score bubble */
+/* ------------------------------
+   Score bubble (ResultPanel)
+------------------------------ */
 .score-bubble {
   position: absolute;
   top: 8px;
@@ -408,11 +480,30 @@ body{
               max-width 0.95s cubic-bezier(0.22, 1, 0.36, 1),
               margin 0.95s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.stage--center{
+  grid-template-columns: 1fr;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.stage--split{
+  grid-template-columns: 1.15fr .85fr;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.stage--split .card:last-child{
+  box-shadow: 0 20px 50px rgba(154,107,255,.15), var(--shadow-1);
+}
 
-/* Ensure baseline stacking and a higher layer for result card */
+/* Ensure baseline stacking and will-change hints for motion */
 .card{ position: relative; z-index: 1; }
-.card--result{ z-index: 5; }   /* bump higher */
-.card--upload{ z-index: 1; }
+.card--result{
+  z-index: 5;   /* bump higher */
+  will-change: transform, filter, opacity;
+}
+.card--upload{
+  z-index: 1;
+  will-change: transform;
+}
 
 /* Panel close button: exactly same size & typography as .file-x */
 .panel-x{
@@ -428,4 +519,3 @@ body{
   font-size: 18px;       /* tweak until it visually matches your pill “x” */
   line-height: 1;
 }
-

@@ -1,10 +1,21 @@
-export function EvaluateButton({ disabled, onClick, loading }:{
-  disabled: boolean; onClick: ()=>void; loading?: boolean;
+export function EvaluateButton({
+  disabled,
+  onClick,
+  loading,
+}: {
+  disabled: boolean;
+  onClick: () => void;
+  loading?: boolean;
 }) {
+  const isDisabled = disabled || !!loading;
+
   return (
-    <div style={{ display:"grid", placeItems:"center", marginTop: 24 }}>
-      <button className={`btn primary big-btn ${disabled ? "big-btn-disabled" : ""}`}
-              disabled={disabled} onClick={onClick}>
+    <div className="evaluate-button">
+      <button
+        className={`btn primary big-btn${isDisabled ? " big-btn-disabled" : ""}`}
+        disabled={isDisabled}
+        onClick={onClick}
+      >
         {loading ? "Evaluating…" : "Evaluate"}
       </button>
     </div>
