@@ -21,7 +21,7 @@ async def match(
 
     # Temporarily switch provider if query param is present
     original = settings.provider
-    if provider and provider.lower() in ("openai", "gemini"):
+    if provider and provider.lower() in ("openai", "gemini", "claude", "ensemble"):
         settings.provider = provider  # override for this request only
 
     try:

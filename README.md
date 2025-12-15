@@ -37,6 +37,13 @@ pip install -r requirements.txt
 - GEMINI_CHAT_MODEL=gemini-1.5-flash     # or a model you listed via ListModels
 - GEMINI_EMBEDDINGS_MODEL=text-embedding-004
 
+- Claude
+- ANTHROPIC_API_KEY=sk-ant-...your-key...
+- ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+
+- Ensemble judge
+- ENSEMBLE_JUDGE_PROVIDER=OpenAI   # who reconciles the other models (OpenAI/Gemini/Claude)
+
 - Generation parameters
 - TEMPERATURE=0.4
 - SEED=7
@@ -50,7 +57,7 @@ uvicorn app.main:app --reload
 
 - <http://localhost:8000/docs>
 - POST /match — upload cv + jd (PDF/DOCX).
-- Optional query param: provider=OpenAI or provider=Gemini.
+- Optional query param: provider=OpenAI|Gemini|Claude|Ensemble (defaults to env PROVIDER).
 - GET /health — simple ping.
 
 ## 🖥 Frontend — Setup & Run
