@@ -12,7 +12,7 @@ from pydantic import Field
 
 class Settings(BaseSettings):
     # --- App behavior ---
-    provider: str = Field(default="OpenAI", description="Which provider to use (OpenAI|Gemini|Claude|Ensemble)")
+    provider: str = Field(default="OpenAI", description="Which provider to use (OpenAI|Gemini|Claude|Fusion)")
     env: str = Field(default="development", description="Environment label (dev/prod/test)")
 
     # --- OpenAI configuration ---
@@ -29,8 +29,8 @@ class Settings(BaseSettings):
     anthropic_api_key: str | None = Field(default=None, description="Anthropic API key")
     anthropic_model: str = Field(default="claude-sonnet-4-5-20250929", description="Anthropic Claude model name")
 
-    # --- Ensemble (meta) configuration ---
-    ensemble_judge_provider: str = Field(default="OpenAI", description="Provider to use as the final judge for the ensemble")
+    # --- Fusion (meta) configuration ---
+    fusion_judge_provider: str = Field(default="OpenAI", description="Provider to use as the final judge for the fusion judge step")
 
     # --- General tuning ---
     temperature: float = Field(default=0.4, description="Sampling temperature for model output")

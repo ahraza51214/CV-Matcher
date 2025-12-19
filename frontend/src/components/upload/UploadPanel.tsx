@@ -24,13 +24,23 @@ export function UploadPanel({
         Upload <b>PDF/DOCX</b> for both CV and Job Description. Drag & drop or click to browse.
       </p>
 
-      <Dropzone label="CV (PDF/DOCX)" accept={ACCEPT} onPick={onCv}>
+      <Dropzone
+        label="CV (PDF/DOCX)"
+        dropText="Drop CV here"
+        accept={ACCEPT}
+        onPick={onCv}
+      >
         {cvFile && <FilePill file={cvFile} onClear={() => onCv(null)} />}
       </Dropzone>
 
       <div className="spacer spacer--md" />
 
-      <Dropzone label="Job Description (PDF/DOCX)" accept={ACCEPT} onPick={onJd}>
+      <Dropzone
+        label="Job Description (PDF/DOCX)"
+        dropText="Drop job description here"
+        accept={ACCEPT}
+        onPick={onJd}
+      >
         {jdFile && <FilePill file={jdFile} onClear={() => onJd(null)} />}
       </Dropzone>
 

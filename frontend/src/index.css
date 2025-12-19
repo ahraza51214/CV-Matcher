@@ -395,10 +395,12 @@ body{
 
 .header {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--gap-4);
+  justify-content: center;
+  gap: 22px;
   margin-bottom: var(--gap-6);
+  text-align: center;
 }
 
 .footer {

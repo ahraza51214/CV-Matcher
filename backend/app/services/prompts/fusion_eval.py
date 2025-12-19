@@ -1,11 +1,11 @@
 # Prompt for the meta "super" model that reconciles multiple provider outputs.
-ENSEMBLE_SYS = (
+FUSION_SYS = (
     "You are the hiring lead. Multiple AI recruiters have already evaluated the CV "
     "against the job description. Read their JSON verdicts and produce a single, "
     "balanced decision. Always return STRICT JSON and keep it concise."
 )
 
-def ensemble_user(original_user_prompt: str, votes: dict[str, dict]) -> str:
+def fusion_user(original_user_prompt: str, votes: dict[str, dict]) -> str:
     """
     Provide the original task context plus each provider's JSON to the judge model.
     votes: mapping provider_name -> JSON dict (or {'error': '...'}).

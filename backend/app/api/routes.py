@@ -10,7 +10,7 @@ router = APIRouter()
 async def match(
     cv: UploadFile = File(...),
     jd: UploadFile = File(...),
-    provider: str | None = Query(None, description="OpenAI or Gemini"),
+    provider: str | None = Query(None, description="OpenAI, Gemini, Claude, or Fusion"),
 ):
     cv_text = read_any(cv)
     jd_text = read_any(jd)
@@ -21,7 +21,7 @@ async def match(
 
     # Temporarily switch provider if query param is present
     original = settings.provider
-    if provider and provider.lower() in ("openai", "gemini", "claude", "ensemble"):
+    if provider and provider.lower() in ("openai", "gemini", "claude", "fusion"):
         settings.provider = provider  # override for this request only
 
     try:

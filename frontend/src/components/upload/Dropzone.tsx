@@ -3,12 +3,19 @@ import { useRef, useState, useCallback } from "react";
 
 type Props = {
   label: string;
+  dropText?: string;
   onPick: (file: File | null) => void;
   accept: string;
   children?: React.ReactNode; // e.g., FilePill
 };
 
-export function Dropzone({ label, onPick, accept, children }: Props) {
+export function Dropzone({
+  label,
+  dropText = "Drop file here",
+  onPick,
+  accept,
+  children,
+}: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [active, setActive] = useState(false);
   const pick = () => inputRef.current?.click();
@@ -35,7 +42,7 @@ export function Dropzone({ label, onPick, accept, children }: Props) {
         {children ?? (
           <div className="dz-inner">
             <div className="dz-icon"><Upload size={18} /></div>
-            <div className="dz-title">Drop file here</div>
+            <div className="dz-title">{dropText}</div>
             <div className="dz-sub">or <span className="linklike">click to browse</span></div>
           </div>
         )}

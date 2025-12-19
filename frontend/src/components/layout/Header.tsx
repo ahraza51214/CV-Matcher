@@ -9,7 +9,7 @@ type HeaderProps = {
 export function Header({ provider, onChangeProvider }: HeaderProps) {
   return (
     <header className="header">
-      <h1 className="brand header__title">DEEP Job Match AI</h1>
+      <h1 className="brand header__title">COMPASS AI Pathfinder</h1>
       <ProviderToggle provider={provider} onChange={onChangeProvider} />
     </header>
   );

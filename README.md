@@ -41,8 +41,8 @@ pip install -r requirements.txt
 - ANTHROPIC_API_KEY=sk-ant-...your-key...
 - ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
 
-- Ensemble judge
-- ENSEMBLE_JUDGE_PROVIDER=OpenAI   # who reconciles the other models (OpenAI/Gemini/Claude)
+- Fusion judge
+- FUSION_JUDGE_PROVIDER=OpenAI   # who reconciles the other models (OpenAI/Gemini/Claude)
 
 - Generation parameters
 - TEMPERATURE=0.4
@@ -57,7 +57,7 @@ uvicorn app.main:app --reload
 
 - <http://localhost:8000/docs>
 - POST /match — upload cv + jd (PDF/DOCX).
-- Optional query param: provider=OpenAI|Gemini|Claude|Ensemble (defaults to env PROVIDER).
+- Optional query param: provider=OpenAI|Gemini|Claude|Fusion (defaults to env PROVIDER).
 - GET /health — simple ping.
 
 ## 🖥 Frontend — Setup & Run
@@ -74,5 +74,5 @@ npm run dev
 ### 3. Visit <http://localhost:5173>
 
 - Upload a JD and a CV
-- Use the Provider toggle (OpenAI/Gemini)
+- Use the Provider toggle (OpenAI/Gemini/Claude/Fusion)
 - Click Start AI Match Scoring

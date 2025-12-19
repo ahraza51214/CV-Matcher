@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="footer">
-      DEEP Job Match AI
+      Intelligent pathways between people and roles.
     </footer>
   );
 }
