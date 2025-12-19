@@ -109,7 +109,7 @@ body{
 .brand{
   display:flex; align-items:center; gap:12px;
   margin: 0;
-  font-weight:700;
+  font-weight: 300;
   letter-spacing: .3px;
 }
 
@@ -172,7 +172,7 @@ body{
 .upload-panel__title{
   margin: 0;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 300;
 }
 
 .upload-panel__description{
@@ -188,6 +188,7 @@ body{
   display: grid;
   place-items: center;
   margin-top: 24px;
+  font-weight: 300;
 }
 
 .spacer{
@@ -241,7 +242,7 @@ body{
   box-shadow: 0 10px 22px rgba(154,107,255,.25);
   margin: 4px auto 10px;
 }
-.dz-title{ font-weight: 700; letter-spacing: .2px; }
+.dz-title{ font-weight: 300; letter-spacing: .2px; }
 .dz-sub{ font-size: 12px; color: var(--muted); }
 .linklike{ text-decoration: underline; text-underline-offset: 3px; }
 
