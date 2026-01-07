@@ -1,4 +1,4 @@
-export type Provider = "OpenAI" | "Gemini" | "Claude" | "Fusion";
+export type Provider = "ChatGPT" | "Gemini" | "Claude" | "Fusion";
 
 export type MatchResponse = {
   matchScore: number;

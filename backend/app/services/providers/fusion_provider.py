@@ -33,7 +33,9 @@ class FusionLlmEvaluator:
         return await judge.eval_json(FUSION_SYS, judge_user)
 
     def _judge_evaluator(self):
-        judge = (settings.fusion_judge_provider or "OpenAI").lower()
+        judge = (settings.fusion_judge_provider or "ChatGPT").lower()
+        if judge in ("chatgpt", "openai"):
+            return OpenAILlmEvaluator()
         if judge == "gemini":
             return GeminiLlmEvaluator()
         if judge == "claude":

@@ -6,7 +6,7 @@ type Props = {
 };
 
 export function ProviderToggle({ provider, onChange }: Props) {
-  const providers: Provider[] = ["OpenAI", "Gemini", "Claude", "Fusion"];
+  const providers: Provider[] = ["ChatGPT", "Gemini", "Claude", "Fusion"];
 
   return (
     <div className="provider-toggle">

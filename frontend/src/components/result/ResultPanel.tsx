@@ -31,7 +31,7 @@ export function ResultPanel({
         </button>
       )}
 
-      <h3 className="result-panel__title">Match Result</h3>
+      <h3 className="result-panel__title">AI Match Result</h3>
       {error && <div className="result-panel__error">Error: {error}</div>}
 
       <div className="result-panel__body">

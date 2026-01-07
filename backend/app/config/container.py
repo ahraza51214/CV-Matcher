@@ -9,7 +9,9 @@ def build_use_case() -> EvaluateMatchUseCase:
     """Select concrete provider based on .env (DIP)."""
     provider = settings.provider.lower()
 
-    if provider == "gemini":
+    if provider in ("chatgpt", "openai"):
+        evaluator = OpenAILlmEvaluator()
+    elif provider == "gemini":
         evaluator = GeminiLlmEvaluator()
     elif provider == "claude":
         evaluator = ClaudeLlmEvaluator()
@@ -17,7 +19,7 @@ def build_use_case() -> EvaluateMatchUseCase:
         # Query all, then let the judge reconcile.
         evaluator = FusionLlmEvaluator(
             evaluators=[
-                ("OpenAI", OpenAILlmEvaluator()),
+                ("ChatGPT", OpenAILlmEvaluator()),
                 ("Gemini", GeminiLlmEvaluator()),
                 ("Claude", ClaudeLlmEvaluator()),
             ]

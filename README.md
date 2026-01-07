@@ -1,13 +1,13 @@
-# CV Matcher (FastAPI + Vite/React + OpenAI + Gemini)
+# CV Matcher (FastAPI + Vite/React + ChatGPT + Gemini)
 
-CV-Matcher is an AI-powered web application that analyzes how well a candidate’s CV aligns with a given job description. Built with FastAPI (Python) and Vite/React (TypeScript), it leverages OpenAI and Google Gemini models to evaluate uploaded PDFs or DOCX files and return a realistic match score (0–100) with pros, cons, and a short reasoning. The project follows SOLID principles and a clean architecture to ensure scalability, clarity, and easy provider swapping — demonstrating applied AI integration, modern full-stack development, and clean system design.
+CV-Matcher is an AI-powered web application that analyzes how well a candidate’s CV aligns with a given job description. Built with FastAPI (Python) and Vite/React (TypeScript), it leverages ChatGPT (OpenAI) and Google Gemini models to evaluate uploaded PDFs or DOCX files and return a realistic match score (0–100) with pros, cons, and a short reasoning. The project follows SOLID principles and a clean architecture to ensure scalability, clarity, and easy provider swapping — demonstrating applied AI integration, modern full-stack development, and clean system design.
 
 🔧 Prerequisites
 
 - Python 3.10+ (same as your venv)
 - Node 18+ (for Vite)
 - Accounts/keys for:
-- OpenAI → <https://platform.openai.com/api-keys>
+- OpenAI (for ChatGPT) → <https://platform.openai.com/api-keys>
 - Google AI Studio (Gemini) → <https://aistudio.google.com/app/apikey>
 
 ## ⚙️ Backend — Setup & Run
@@ -25,9 +25,9 @@ pip install -r requirements.txt
 ### 3. Create .env in backend/
 
 - Which LLM to use by default (can be overridden per request)
-- PROVIDER=OpenAI
+- PROVIDER=ChatGPT
 
-- OpenAI
+- ChatGPT (OpenAI)
 - OPENAI_API_KEY=sk-...your-openai-key...
 - CHAT_MODEL=gpt-4o-mini
 - EMBEDDINGS_MODEL=text-embedding-3-small
@@ -42,7 +42,7 @@ pip install -r requirements.txt
 - ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
 
 - Fusion judge
-- FUSION_JUDGE_PROVIDER=OpenAI   # who reconciles the other models (OpenAI/Gemini/Claude)
+- FUSION_JUDGE_PROVIDER=ChatGPT   # who reconciles the other models (ChatGPT/Gemini/Claude)
 
 - Generation parameters
 - TEMPERATURE=0.4
@@ -57,7 +57,7 @@ uvicorn app.main:app --reload
 
 - <http://localhost:8000/docs>
 - POST /match — upload cv + jd (PDF/DOCX).
-- Optional query param: provider=OpenAI|Gemini|Claude|Fusion (defaults to env PROVIDER).
+- Optional query param: provider=ChatGPT|Gemini|Claude|Fusion (defaults to env PROVIDER). OpenAI is accepted as an alias for ChatGPT.
 - GET /health — simple ping.
 
 ## 🖥 Frontend — Setup & Run
@@ -74,5 +74,5 @@ npm run dev
 ### 3. Visit <http://localhost:5173>
 
 - Upload a JD and a CV
-- Use the Provider toggle (OpenAI/Gemini/Claude/Fusion)
+- Use the Provider toggle (ChatGPT/Gemini/Claude/Fusion)
 - Click Start AI Match Scoring

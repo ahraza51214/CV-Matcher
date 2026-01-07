@@ -3,6 +3,7 @@
 ------------------------------ */
 :root{
   --bg: #0b0d12;
+  --font-base: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Segoe UI, Arial, Roboto, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
   --card: rgba(255,255,255,0.06);
   --card-hover: rgba(255,255,255,0.10);
@@ -37,7 +38,14 @@ body{
     radial-gradient(1200px 600px at 20% -10%, rgba(34,225,255,.12), transparent 60%),
     radial-gradient(1000px 600px at 110% 10%, rgba(154,107,255,.10), transparent 60%),
     linear-gradient(180deg, var(--bg), #0a0b10);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: var(--font-base);
+}
+
+button,
+input,
+select,
+textarea{
+  font-family: var(--font-base);
 }
 
 .container{
@@ -68,6 +76,7 @@ body{
   border:1px solid var(--border);
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   color: var(--text);
+  font-family: var(--font-base);
   padding: 10px 16px;
   border-radius: 12px;
   cursor:pointer;
@@ -133,6 +142,7 @@ body{
   border: none;
   background: rgba(255,255,255,.05);
   color: rgba(255,255,255,.6);
+  font-family: var(--font-base);
   cursor: pointer;
   font-size: .9rem;
   font-weight: 500;
@@ -202,6 +212,7 @@ body{
 .dropzone-field{
   display: grid;
   gap: 8px;
+  font-family: var(--font-base);
 }
 
 .dropzone-field__label{
@@ -407,9 +418,17 @@ body{
 .footer {
   margin-top: var(--gap-6);
   text-align: center;
+  color: var(--text);
+  font-size: 14px;
+  padding-bottom: 16px;
+}
+
+.footer__subtext{
+  margin: 8px auto 0;
+  max-width: 650px;
+  line-height: 1.5;
   color: var(--muted);
   font-size: 13px;
-  padding-bottom: 16px;
 }
 
 /* ------------------------------

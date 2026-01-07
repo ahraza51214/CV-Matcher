@@ -5,7 +5,7 @@ from ...config.settings import settings
 JSON_HEADERS = {"Content-Type": "application/json"}
 
 class OpenAILlmEvaluator:
-    """Concrete OpenAI adapter. Exposes eval_json(system, user) -> dict."""
+    """Concrete ChatGPT (OpenAI) adapter. Exposes eval_json(system, user) -> dict."""
 
     async def eval_json(self, system: str, user: str) -> dict:
         try:
@@ -34,7 +34,7 @@ class OpenAILlmEvaluator:
         except httpx.HTTPStatusError as e:
             # Surface provider message to caller
             raise RuntimeError(
-                f"OpenAI error {e.response.status_code}: {e.response.text}"
+                f"ChatGPT (OpenAI) error {e.response.status_code}: {e.response.text}"
             ) from e
         except json.JSONDecodeError as e:
-            raise RuntimeError("OpenAI returned non-JSON content.") from e
+            raise RuntimeError("ChatGPT (OpenAI) returned non-JSON content.") from e

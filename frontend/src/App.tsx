@@ -20,7 +20,7 @@ import {
 import type { Provider } from "./api/types";
 
 export default function App() {
-  const [provider, setProvider] = useState<Provider>("OpenAI");
+  const [provider, setProvider] = useState<Provider>("ChatGPT");
   const { cvFile, jdFile, setCvFile, setJdFile } = useUploadState();
   const { result, loading, error, started, run, dismiss } = useEvaluation(provider);
 

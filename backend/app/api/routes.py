@@ -10,7 +10,7 @@ router = APIRouter()
 async def match(
     cv: UploadFile = File(...),
     jd: UploadFile = File(...),
-    provider: str | None = Query(None, description="OpenAI, Gemini, Claude, or Fusion"),
+    provider: str | None = Query(None, description="ChatGPT, Gemini, Claude, or Fusion"),
 ):
     cv_text = read_any(cv)
     jd_text = read_any(jd)
@@ -21,8 +21,17 @@ async def match(
 
     # Temporarily switch provider if query param is present
     original = settings.provider
-    if provider and provider.lower() in ("openai", "gemini", "claude", "fusion"):
-        settings.provider = provider  # override for this request only
+    if provider:
+        aliases = {
+            "chatgpt": "ChatGPT",
+            "openai": "ChatGPT",
+            "gemini": "Gemini",
+            "claude": "Claude",
+            "fusion": "Fusion",
+        }
+        normalized = aliases.get(provider.lower())
+        if normalized:
+            settings.provider = normalized  # override for this request only
 
     try:
         use_case = build_use_case()
