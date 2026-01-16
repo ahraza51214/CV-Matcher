@@ -26,7 +26,7 @@ export function UploadPanel({
 
       <Dropzone
         label="CV (PDF/DOCX)"
-        dropText="Drop CV here"
+        dropText="Select Candidate"
         accept={ACCEPT}
         onPick={onCv}
       >
@@ -37,7 +37,7 @@ export function UploadPanel({
 
       <Dropzone
         label="Job Description (PDF/DOCX)"
-        dropText="Drop job description here"
+        dropText="Select Job Description"
         accept={ACCEPT}
         onPick={onJd}
       >

@@ -91,7 +91,13 @@ const TOOL_DATA: Record<ToolId, ToolOption[]> = {
   ],
 };
 
-export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number }) {
+export function IntegrationExplorer({
+  resetSignal = 0,
+  canUseContext = true,
+}: {
+  resetSignal?: number;
+  canUseContext?: boolean;
+}) {
   const [tool, setTool] = useState<ToolId | "">("");
   const [option, setOption] = useState<string>("");
   const [currentCard, setCurrentCard] = useState<ResultCard | null>(null);
@@ -169,7 +175,7 @@ export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number 
     setCurrentCard(null);
     setPinnedCards([]);
     setKeepCurrent(false);
-  }, [resetSignal]);
+  }, [resetSignal, canUseContext]);
 
   return (
     <div className="integration-section">
@@ -201,6 +207,7 @@ export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number 
                 id="tool-select"
                 className="integration-panel__select"
                 value={tool}
+                disabled={!canUseContext}
                 onChange={(e) => handleToolChange(e.target.value)}
               >
                 <option value="">Choose a tool</option>
@@ -222,6 +229,7 @@ export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number 
                     id="data-select"
                     className="integration-panel__select"
                     value={option}
+                    disabled={!canUseContext}
                     onChange={(e) => handleOptionChange(e.target.value)}
                   >
                     <option value="">Choose a data option</option>
@@ -238,7 +246,7 @@ export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number 
         </motion.div>
 
         <AnimatePresence onExitComplete={onExitComplete}>
-          {showResults && (
+          {showResults && canUseContext && (
             <motion.div
               className="integration-results-column card"
               initial={resultZoom.initial}
@@ -303,6 +311,12 @@ export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number 
           )}
         </AnimatePresence>
       </motion.div>
+
+      {!canUseContext && (
+        <div className="integration-locked">
+          <p className="integration-locked__text">Evaluate a candidate to unlock the Candidate AI Context Explorer.</p>
+        </div>
+      )}
     </div>
   );
 }

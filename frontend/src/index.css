@@ -395,6 +395,11 @@ textarea{
   border-color: rgba(34,225,255,.6);
 }
 
+.integration-panel__select:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+
 .integration-panel__result{
   margin-top: 8px;
   padding: 14px;
@@ -521,6 +526,16 @@ textarea{
 .integration-placeholder{
   padding: 16px;
   text-align: center;
+}
+
+.integration-locked{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.integration-locked__text{
+  color: var(--muted);
+  font-size: 13px;
 }
 
 @keyframes fadeIn{

@@ -95,7 +95,7 @@ export default function App() {
         </AnimatePresence>
       </motion.div>
 
-      <IntegrationExplorer resetSignal={integrationReset} />
+      <IntegrationExplorer resetSignal={integrationReset} canUseContext={started} />
 
       <Footer />
     </div>
