@@ -22,71 +22,155 @@ const TOOL_DATA: Record<ToolId, ToolOption[]> = {
   Invenias: [
     {
       value: "profile",
-      label: "Candidate profile snapshot",
+      label: "Summary",
       content:
-        "Current title: Senior Backend Engineer at NordTek. Skills: TypeScript, Node, GraphQL, AWS. Mobility: Copenhagen/Remote. Next step: Panel interview scheduled for Thursday.",
+        "Candidate profile snapshot: title, current employer, core skills, mobility, and current stage details.",
     },
     {
-      value: "notes",
-      label: "Recent recruiter notes",
+      value: "salary",
+      label: "Salary",
       content:
-        "Recruiter note (2d ago): Prefers teams with clear code ownership. Open to fintech/AI. Salary expectation: 700k DKK base. Prefers hybrid 2 days on-site.",
+        "Salary expectation: 700k DKK base, hybrid 2 days on-site. Notes: open to bonus/equity mix if role includes architecture ownership.",
+    },
+    {
+      value: "experience",
+      label: "Experience",
+      content:
+        "Experience summary: 8+ years backend (TypeScript/Node/GraphQL/AWS), led teams of 4–6, designed event-driven systems, strong API design.",
+    },
+    {
+      value: "education",
+      label: "Educational background",
+      content:
+        "Education: M.Sc. Computer Science, DTU. Additional: AWS Solutions Architect Associate; internal mentorship program lead.",
     },
   ],
   Survey: [
     {
-      value: "csat",
-      label: "Candidate satisfaction (latest)",
+      value: "summary",
+      label: "Summary of responses",
       content:
-        "Survey completed 2024-06-12. Score: 8/10. Comment: “Great clarity on process and timeline. Would like earlier feedback on coding task scope.”",
+        "High satisfaction with process clarity; prefers concise feedback and shorter assessments. Timeline visibility rated 9/10.",
     },
     {
-      value: "nps",
-      label: "Net promoter trend",
+      value: "readiness",
+      label: "Job change readiness",
       content:
-        "Rolling 30-day NPS for this candidate’s journey: +32. Strongest drivers: transparent timeline, fast scheduling. Friction: task instructions detail.",
+        "Ready to move within 4–6 weeks. Open to hybrid roles; needs clear onboarding plan and growth path.",
+    },
+    {
+      value: "salary",
+      label: "Salary expectations",
+      content:
+        "Salary expectation range: 680k–720k DKK base; values equity and learning budget. Prefers capped on-call or rotation.",
+    },
+    {
+      value: "engagement",
+      label: "Engagement level",
+      content:
+        "Engagement: responds within 24h; opened outreach multiple times; active in follow-ups. Wants a practical tech conversation vs. long take-home.",
     },
   ],
   Copilot: [
     {
-      value: "history",
-      label: "Candidate history summary",
+      value: "history-full",
+      label: "Full history",
       content:
-        "Outreach opened 3 times; replied within 4 hours. Past roles matched to staff+ IC track. Previously declined a role due to on-call load; prefers capped rotations.",
+        "Full history: outreach opened 3x, reply within 4h; declined one role due to on-call load; prefers architecture input and capped rotations.",
     },
     {
-      value: "context",
-      label: "Role fit signals",
+      value: "history-3m",
+      label: "3 months",
       content:
-        "Signals flagged: B2B SaaS scaling experience, strong API design, mentorship of 4+ engineers. Risk: limited greenfield in last role; prefers architecture input.",
+        "Last 3 months: two role explorations; seeking backend leadership with strong product input; prefers hybrid 2d/wk.",
+    },
+    {
+      value: "history-6m",
+      label: "6 months",
+      content:
+        "Last 6 months: evaluated fintech and AI roles; key motivators—team ownership and roadmap influence; avoids heavy on-call.",
+    },
+    {
+      value: "history-9m",
+      label: "9 months",
+      content:
+        "Last 9 months: considered senior IC and lead tracks; consistent preference for mentoring and API/platform work.",
+    },
+    {
+      value: "history-12m",
+      label: "12 months",
+      content:
+        "Last 12 months: multiple conversations across B2B SaaS; strongest fit when architecture and team leadership are combined.",
     },
   ],
   TalentRiver: [
     {
-      value: "match",
-      label: "Talent Match recommendations",
+      value: "ls-health",
+      label: "Life Science & Healthcare",
       content:
-        "Match score: 87 for Backend Lead (Copenhagen). Highlights: event-driven systems, AWS, hiring experience. Gaps: limited Rust exposure requested by team.",
+        "Life Science & Healthcare matches: roles emphasizing compliance-ready architectures and data privacy; candidate strong on APIs and eventing.",
     },
     {
-      value: "pipeline",
-      label: "Pipeline position",
+      value: "industrial",
+      label: "Industrial & Construction",
       content:
-        "Currently in shortlist for two roles. Next action: send take-home alternative (pairing) per candidate preference to avoid long assignments.",
+        "Industrial & Construction matches: platforms for logistics/IoT; candidate fit on cloud/backend; check comfort with OT/edge patterns.",
+    },
+    {
+      value: "finance",
+      label: "Finance",
+      content:
+        "Finance matches: API-led modernization and risk systems; candidate prefers limited on-call; good for platform/API squads.",
+    },
+    {
+      value: "it-digital",
+      label: "IT & Digital",
+      content:
+        "IT & Digital matches: strong alignment with product-engineering squads; candidate wants architecture input and mentorship duties.",
+    },
+    {
+      value: "consumer",
+      label: "Consumer",
+      content:
+        "Consumer matches: prefers roles with measurable customer impact; watch for late-night on-call requirements.",
+    },
+    {
+      value: "public-ngos",
+      label: "Public & NGOS",
+      content:
+        "Public & NGOs: candidate open if impact is clear; prefers modern stacks and transparent governance.",
+    },
+    {
+      value: "defense",
+      label: "Defense Industry",
+      content:
+        "Defense industry: evaluate clearance needs; candidate open to security-focused backend work if remote/hybrid is possible.",
     },
   ],
   Quill: [
     {
-      value: "calls",
-      label: "Call history (recent)",
+      value: "summary",
+      label: "Summary",
       content:
-        "Last call 2024-06-18 (17 min). Topics: team structure, compensation bands, tech stack. Candidate asked for example incident runbooks; follow-up sent.",
+        "Recent calls summarized: team structure, comp bands, tech stack; candidate asked for incident runbook examples.",
     },
     {
-      value: "transcript",
-      label: "Call summary cues",
+      value: "interview-1",
+      label: "Interview 1",
       content:
-        "Key cues: values concise feedback, prefers async updates. Mentioned relocating in Q1 next year; willing to start remote then move.",
+        "Interview 1: discovery call; discussed role scope, architecture expectations, and on-call policy.",
+    },
+    {
+      value: "interview-2",
+      label: "Interview 2",
+      content:
+        "Interview 2: deeper tech conversation on API design and event-driven patterns; candidate wants clear ownership areas.",
+    },
+    {
+      value: "interview-3",
+      label: "Interview 3",
+      content:
+        "Interview 3: focus on team fit and leadership style; candidate values mentorship and transparent decision-making.",
     },
   ],
 };
