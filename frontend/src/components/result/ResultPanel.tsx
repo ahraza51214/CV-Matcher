@@ -44,8 +44,9 @@ export function ResultPanel({
 
         <div className="result-panel__sections">
           {hasResult && result?.reasoning && (
-            <div className="bordered result-panel__reasoning">
-              {result.reasoning}
+            <div className="bordered section-card result-panel__reasoning">
+              <div className="muted section-card__title">Summary</div>
+              <p className="section-card__text">{result.reasoning}</p>
             </div>
           )}
           {hasResult && <SectionCard title="Pros" items={result?.pros || []} />}
