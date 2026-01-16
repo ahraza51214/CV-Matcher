@@ -9,25 +9,19 @@ export function usePanelsChoreography(
   started: boolean,
   dismiss: () => void,
 ) {
-  const [closing, setClosing] = useState(false);
-
   const uploadRef = useRef<HTMLDivElement | null>(null);
 
-  const showResults = started && !closing;
-  const stageClass = started || closing ? "stage--split" : "stage--center";
-  const stageAnimate = started || closing ? "split" : "center";
-  const uploadAnimate = started || closing ? "left" : "center";
+  const showResults = started;
+  const stageClass = started ? "stage--split" : "stage--center";
+  const stageAnimate = started ? "split" : "center";
+  const uploadAnimate = started ? "left" : "center";
 
   const requestClose = () => {
-    if (!closing) {
-      setClosing(true);
-    }
+    dismiss();
   };
 
   const onExitComplete = () => {
-    if (!closing) return;
-    dismiss(); // flips started=false in evaluation hook
-    window.requestAnimationFrame(() => setClosing(false)); // let stage animate back to center
+    // no-op; closing handled by dismiss
   };
 
   return {

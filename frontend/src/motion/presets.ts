@@ -13,7 +13,7 @@ export const stageVariants: Variants = {
   split:  { transition: { when: "beforeChildren" as const } },
 };
 
-const uploadTransition: Transition = { ...timeline, duration: 1.25 };
+const uploadTransition: Transition = { ...timeline, duration: 0.75 };
 
 /** Upload panel: translate as one solid block (no stretchy layout morphing) */
 export const uploadSolid: Variants = {

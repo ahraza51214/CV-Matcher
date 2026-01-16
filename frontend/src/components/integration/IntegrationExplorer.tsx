@@ -245,7 +245,7 @@ export function IntegrationExplorer({
           </div>
         </motion.div>
 
-        <AnimatePresence onExitComplete={onExitComplete}>
+        <AnimatePresence mode="wait" onExitComplete={onExitComplete}>
           {showResults && canUseContext && (
             <motion.div
               className="integration-results-column card"

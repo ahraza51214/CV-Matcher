@@ -51,7 +51,10 @@ export function Dropzone({
           className="dz-input"
           type="file"
           accept={accept}
-          onChange={(e) => onPick(e.target.files?.[0] ?? null)}
+          onChange={(e) => {
+            onPick(e.target.files?.[0] ?? null);
+            e.target.value = ""; // allow picking the same file again after reset/close
+          }}
         />
       </div>
     </div>
