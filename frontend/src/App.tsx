@@ -5,6 +5,7 @@ import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { UploadPanel } from "./components/upload/UploadPanel";
 import { ResultPanel } from "./components/result/ResultPanel";
+import { IntegrationExplorer } from "./components/integration/IntegrationExplorer";
 
 import { useUploadState } from "./hooks/useUploadState";
 import { useEvaluation } from "./hooks/useEvaluation";
@@ -85,6 +86,8 @@ export default function App() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      <IntegrationExplorer />
 
       <Footer />
     </div>
