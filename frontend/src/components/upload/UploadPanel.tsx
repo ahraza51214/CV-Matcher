@@ -20,7 +20,6 @@ export function UploadPanel({
   return (
     <div className="upload-panel">
       <p className="eyebrow upload-panel__eyebrow">Candidate AI Job Matcher</p>
-      <h3 className="upload-panel__title">Your inputs</h3>
       <p className="upload-panel__description muted">
         Upload <b>PDF/DOCX</b> for both CV and Job Description. Drag & drop or click to browse.
       </p>

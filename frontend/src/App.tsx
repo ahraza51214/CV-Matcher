@@ -22,6 +22,7 @@ import type { Provider } from "./api/types";
 
 export default function App() {
   const [provider, setProvider] = useState<Provider>("ChatGPT");
+  const [integrationReset, setIntegrationReset] = useState(0);
   const { cvFile, jdFile, setCvFile, setJdFile } = useUploadState();
   const { result, loading, error, started, run, dismiss } = useEvaluation(provider);
 
@@ -35,6 +36,13 @@ export default function App() {
     requestClose,
     onExitComplete,
   } = usePanelsChoreography(started, dismiss);
+
+  const handleCloseResults = () => {
+    setCvFile(null);
+    setJdFile(null);
+    setIntegrationReset((n) => n + 1);
+    requestClose();
+  };
 
   return (
     <div className="container">
@@ -80,14 +88,14 @@ export default function App() {
                 result={result}
                 loading={loading}
                 error={error}
-                onClose={requestClose}
+                onClose={handleCloseResults}
               />
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
 
-      <IntegrationExplorer />
+      <IntegrationExplorer resetSignal={integrationReset} />
 
       <Footer />
     </div>

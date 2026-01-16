@@ -1,9 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { stageVariants, uploadSolid, resultZoom, timeline } from "../../motion/presets";
+import { usePanelsChoreography } from "../../hooks/usePanelsChoreography";
 
 type ToolId = "Invenias" | "Survey" | "Copilot" | "TalentRiver" | "Quill";
 
 type ToolOption = {
   value: string;
+  label: string;
+  content: string;
+};
+
+type ResultCard = {
+  id: string;
+  tool: ToolId;
   label: string;
   content: string;
 };
@@ -81,90 +91,218 @@ const TOOL_DATA: Record<ToolId, ToolOption[]> = {
   ],
 };
 
-export function IntegrationExplorer() {
+export function IntegrationExplorer({ resetSignal = 0 }: { resetSignal?: number }) {
   const [tool, setTool] = useState<ToolId | "">("");
   const [option, setOption] = useState<string>("");
+  const [currentCard, setCurrentCard] = useState<ResultCard | null>(null);
+  const [pinnedCards, setPinnedCards] = useState<ResultCard[]>([]);
+  const [keepCurrent, setKeepCurrent] = useState(false);
+  const hasContent = !!currentCard || pinnedCards.length > 0;
+
+  const {
+    showResults,
+    stageAnimate,
+    uploadAnimate,
+    onExitComplete,
+  } = usePanelsChoreography(hasContent, () => {});
 
   const optionsForTool = useMemo(
     () => (tool ? TOOL_DATA[tool] : []),
     [tool],
   );
 
-  const selectedOption = useMemo(
-    () => optionsForTool.find((opt) => opt.value === option),
-    [optionsForTool, option],
-  );
+  const createCard = (toolId: ToolId, opt: ToolOption): ResultCard => ({
+    id: `${toolId}-${opt.value}-${Date.now()}`,
+    tool: toolId,
+    label: opt.label,
+    content: opt.content,
+  });
+
+  const finalizeCurrentIfKept = () => {
+    if (currentCard && keepCurrent) {
+      setPinnedCards((prev) => [currentCard, ...prev]);
+    }
+    setKeepCurrent(false);
+  };
 
   const handleToolChange = (value: string) => {
+    finalizeCurrentIfKept();
     if (value === "") {
       setTool("");
       setOption("");
+      setCurrentCard(null);
       return;
     }
 
     setTool(value as ToolId);
     setOption("");
+    setCurrentCard(null);
   };
 
-  return (
-    <div className="integration-panel card">
-      <div className="integration-panel__header">
-        <div>
-          <p className="integration-panel__eyebrow">Candidate Context AI explorer</p>
-        </div>
-      </div>
-      <div className="integration-panel__controls">
-        <label className="integration-panel__label" htmlFor="tool-select">
-          Select tool
-        </label>
-        <div className="integration-panel__field">
-          <select
-            id="tool-select"
-            className="integration-panel__select"
-            value={tool}
-            onChange={(e) => handleToolChange(e.target.value)}
-          >
-            <option value="">Choose a tool</option>
-            <option value="Invenias">Invenias</option>
-            <option value="Survey">Survey</option>
-            <option value="Copilot">Copilot</option>
-            <option value="TalentRiver">TalentRiver</option>
-            <option value="Quill">Quill </option>
-          </select>
-        </div>
+  const handleOptionChange = (value: string) => {
+    finalizeCurrentIfKept();
+    setOption(value);
 
-        {tool && (
-          <div className="integration-panel__secondary">
-            <label className="integration-panel__label" htmlFor="data-select">
-              Select data option from {tool}
+    if (!value || !tool) {
+      setCurrentCard(null);
+      return;
+    }
+
+    const currentTool = tool as ToolId;
+    const target = TOOL_DATA[currentTool].find((opt) => opt.value === value);
+    if (target) {
+      setCurrentCard(createCard(currentTool, target));
+    }
+  };
+
+  const handleUnpin = (id: string) => {
+    setPinnedCards((prev) => prev.filter((card) => card.id !== id));
+    if (currentCard && currentCard.id === id) {
+      setCurrentCard(null);
+      setKeepCurrent(false);
+    }
+  };
+
+  useEffect(() => {
+    setTool("");
+    setOption("");
+    setCurrentCard(null);
+    setPinnedCards([]);
+    setKeepCurrent(false);
+  }, [resetSignal]);
+
+  return (
+    <div className="integration-section">
+      <motion.div
+        className={`integration-grid ${showResults ? "integration-grid--split" : "integration-grid--solo"}`}
+        variants={stageVariants}
+        animate={stageAnimate}
+        initial={false}
+        transition={timeline}
+      >
+        <motion.div
+          className="integration-panel card"
+          variants={uploadSolid}
+          animate={uploadAnimate}
+          transition={timeline}
+          initial={false}
+        >
+          <div className="integration-panel__header">
+            <div>
+              <p className="integration-panel__eyebrow">Candidate AI Context Explorer</p>
+            </div>
+          </div>
+          <div className="integration-panel__controls">
+            <label className="integration-panel__label" htmlFor="tool-select">
+              Select tool
             </label>
             <div className="integration-panel__field">
               <select
-                id="data-select"
+                id="tool-select"
                 className="integration-panel__select"
-                value={option}
-                onChange={(e) => setOption(e.target.value)}
+                value={tool}
+                onChange={(e) => handleToolChange(e.target.value)}
               >
-                <option value="">Choose a data option</option>
-                {optionsForTool.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
+                <option value="">Choose a tool</option>
+                <option value="Invenias">Invenias</option>
+                <option value="Survey">Survey</option>
+                <option value="Copilot">Copilot</option>
+                <option value="TalentRiver">TalentRiver</option>
+                <option value="Quill">Quill </option>
               </select>
             </div>
-          </div>
-        )}
-      </div>
 
-      {selectedOption && (
-        <div className="integration-panel__result bordered">
-          <p className="integration-panel__pill">
-            {tool} • {selectedOption.label}
-          </p>
-          <p className="integration-panel__text">{selectedOption.content}</p>
-        </div>
-      )}
+            {tool && (
+              <div className="integration-panel__secondary">
+                <label className="integration-panel__label" htmlFor="data-select">
+                  Select data option from {tool}
+                </label>
+                <div className="integration-panel__field">
+                  <select
+                    id="data-select"
+                    className="integration-panel__select"
+                    value={option}
+                    onChange={(e) => handleOptionChange(e.target.value)}
+                  >
+                    <option value="">Choose a data option</option>
+                    {optionsForTool.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        <AnimatePresence onExitComplete={onExitComplete}>
+          {showResults && (
+            <motion.div
+              className="integration-results-column card"
+              initial={resultZoom.initial}
+              animate={resultZoom.animate}
+              exit={resultZoom.exit}
+              transition={resultZoom.transition}
+            >
+              <AnimatePresence initial={false}>
+                {pinnedCards.map((card) => (
+                  <motion.div
+                    key={card.id}
+                    className="card card--result integration-result-card"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <div className="integration-result-card__top">
+                      <p className="integration-panel__pill">
+                        {card.tool} • {card.label}
+                      </p>
+                      <button
+                        type="button"
+                        className="integration-unpin"
+                        onClick={() => handleUnpin(card.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <p className="integration-panel__text">{card.content}</p>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+
+              <AnimatePresence initial={false}>
+                {currentCard && (
+                  <motion.div
+                    key={currentCard.id}
+                    className="card card--result integration-result-card"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.18 }}
+                  >
+                    <div className="integration-result-card__top">
+                      <p className="integration-panel__pill">
+                        {currentCard.tool} • {currentCard.label}
+                      </p>
+                      <button
+                        type="button"
+                        className={`integration-keep-btn ${keepCurrent ? "integration-keep-btn--active" : ""}`}
+                        onClick={() => setKeepCurrent((v) => !v)}
+                      >
+                        {keepCurrent ? "Remove" : "Keep"}
+                      </button>
+                    </div>
+                    <p className="integration-panel__text">{currentCard.content}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
