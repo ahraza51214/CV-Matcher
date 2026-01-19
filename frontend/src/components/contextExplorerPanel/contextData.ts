@@ -7,25 +7,25 @@ export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
       value: "profile",
       label: "Summary",
       content:
-        "Candidate profile snapshot: title, current employer, core skills, mobility, and current stage details.",
+        "Kandidatprofil: titel, nuværende arbejdsgiver, kernekompetencer, mobilitet og nuværende pipelineskridt.",
     },
     {
       value: "salary",
       label: "Salary",
       content:
-        "Salary expectation: 700k DKK base, hybrid 2 days on-site. Notes: open to bonus/equity mix if role includes architecture ownership.",
+        "Lønforventning: 700k DKK base, hybrid 2 dage på kontoret. Åben for bonus/aktie-mix hvis rollen indeholder arkitekturansvar.",
     },
     {
       value: "experience",
       label: "Experience",
       content:
-        "Experience summary: 8+ years backend (TypeScript/Node/GraphQL/AWS), led teams of 4–6, designed event-driven systems, strong API design.",
+        "Erfaringsresumé: 8+ år backend (TypeScript/Node/GraphQL/AWS), ledet teams på 4–6, designet event-drevne systemer, stærk API-design.",
     },
     {
       value: "education",
       label: "Educational background",
       content:
-        "Education: M.Sc. Computer Science, DTU. Additional: AWS Solutions Architect Associate; internal mentorship program lead.",
+        "Uddannelse: Cand.polyt. i Computer Science (DTU). Certificering: AWS Solutions Architect Associate. Har drevet internt mentorprogram.",
     },
   ],
   Survey: [
@@ -33,25 +33,25 @@ export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
       value: "summary",
       label: "Summary of responses",
       content:
-        "High satisfaction with process clarity; prefers concise feedback and shorter assessments. Timeline visibility rated 9/10.",
+        "Høj tilfredshed med procesgennemsigtighed; foretrækker kort feedback og korte assessment-forløb. Tidslinje-synlighed vurderet til 9/10.",
     },
     {
       value: "readiness",
       label: "Job change readiness",
       content:
-        "Ready to move within 4–6 weeks. Open to hybrid roles; needs clear onboarding plan and growth path.",
+        "Klar til jobskifte inden for 4–6 uger. Åben for hybrid-roller; ønsker tydelig onboarding-plan og udviklingssti.",
     },
     {
       value: "salary",
       label: "Salary expectations",
       content:
-        "Salary expectation range: 680k–720k DKK base; values equity and learning budget. Prefers capped on-call or rotation.",
+        "Lønforventning: 680k–720k DKK base; værdsætter aktier og læringsbudget. Foretrækker begrænset on-call eller rotationsordning.",
     },
     {
       value: "engagement",
       label: "Engagement level",
       content:
-        "Engagement: responds within 24h; opened outreach multiple times; active in follow-ups. Wants a practical tech conversation vs. long take-home.",
+        "Engagement: svarer inden for 24 timer; åbnet outreach flere gange; aktiv i opfølgninger. Foretrækker praktisk teknisk dialog frem for lange opgaver.",
     },
   ],
   Copilot: [
@@ -59,31 +59,31 @@ export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
       value: "history-full",
       label: "Full history",
       content:
-        "Full history: outreach opened 3x, reply within 4h; declined one role due to on-call load; prefers architecture input and capped rotations.",
+        "Fuldt historikoverblik: outreach åbnet 3 gange, svar inden for 4 timer; afslog én rolle pga. on-call belastning; ønsker arkitekturindflydelse og begrænsede rotationer.",
     },
     {
       value: "history-3m",
       label: "3 months",
       content:
-        "Last 3 months: two role explorations; seeking backend leadership with strong product input; prefers hybrid 2d/wk.",
+        "Seneste 3 måneder: to rolleafklaringer; søger backend-lead rolle med produktindflydelse; foretrækker hybrid 2 dage/uge.",
     },
     {
       value: "history-6m",
       label: "6 months",
       content:
-        "Last 6 months: evaluated fintech and AI roles; key motivators—team ownership and roadmap influence; avoids heavy on-call.",
+        "Seneste 6 måneder: vurderet fintech- og AI-roller; vigtig motivation: team-ejerskab og roadmap-indflydelse; undgår tung on-call.",
     },
     {
       value: "history-9m",
       label: "9 months",
       content:
-        "Last 9 months: considered senior IC and lead tracks; consistent preference for mentoring and API/platform work.",
+        "Seneste 9 måneder: overvejet senior IC- og lead-spor; konsekvent præference for mentoring og API/platformsarbejde.",
     },
     {
       value: "history-12m",
       label: "12 months",
       content:
-        "Last 12 months: multiple conversations across B2B SaaS; strongest fit when architecture and team leadership are combined.",
+        "Seneste 12 måneder: flere dialoger i B2B SaaS; bedst match når arkitekturansvar kombineres med teamledelse.",
     },
   ],
   TalentRiver: [
@@ -91,43 +91,43 @@ export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
       value: "ls-health",
       label: "Life Science & Healthcare",
       content:
-        "Life Science & Healthcare matches: roles emphasizing compliance-ready architectures and data privacy; candidate strong on APIs and eventing.",
+        "Life Science & Healthcare: roller med fokus på compliance-klar arkitektur og dataprivatliv; kandidaten er stærk på API'er og eventing.",
     },
     {
       value: "industrial",
       label: "Industrial & Construction",
       content:
-        "Industrial & Construction matches: platforms for logistics/IoT; candidate fit on cloud/backend; check comfort with OT/edge patterns.",
+        "Industri & Byggeri: platforme til logistik/IoT; kandidat passer på cloud/backend; afklar komfort med OT/edge-mønstre.",
     },
     {
       value: "finance",
       label: "Finance",
       content:
-        "Finance matches: API-led modernization and risk systems; candidate prefers limited on-call; good for platform/API squads.",
+        "Finans: API-drevet modernisering og risikosystemer; kandidaten foretrækker begrænset on-call; god til platform/API-teams.",
     },
     {
       value: "it-digital",
       label: "IT & Digital",
       content:
-        "IT & Digital matches: strong alignment with product-engineering squads; candidate wants architecture input and mentorship duties.",
+        "IT & Digital: stærk kobling til produkt/engineering squads; kandidaten ønsker arkitekturinput og mentoropgaver.",
     },
     {
       value: "consumer",
       label: "Consumer",
       content:
-        "Consumer matches: prefers roles with measurable customer impact; watch for late-night on-call requirements.",
+        "Consumer: foretrækker roller med målbar kundeimpact; vær opmærksom på krav om natlig on-call.",
     },
     {
       value: "public-ngos",
       label: "Public & NGOS",
       content:
-        "Public & NGOs: candidate open if impact is clear; prefers modern stacks and transparent governance.",
+        "Offentlig & NGO: åben hvis effekt er tydelig; foretrækker moderne stack og transparent governance.",
     },
     {
       value: "defense",
       label: "Defense Industry",
       content:
-        "Defense industry: evaluate clearance needs; candidate open to security-focused backend work if remote/hybrid is possible.",
+        "Forsvarsindustri: afklar sikkerhedsgodkendelse; kandidaten er åben for sikkerhedsorienteret backend hvis remote/hybrid er muligt.",
     },
   ],
   Quill: [
@@ -135,25 +135,25 @@ export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
       value: "summary",
       label: "Summary",
       content:
-        "Recent calls summarized: team structure, comp bands, tech stack; candidate asked for incident runbook examples.",
+        "Seneste samtaler: teamstruktur, komp-niveauer, tech stack; kandidaten bad om eksempler på incident-runbooks.",
     },
     {
       value: "interview-1",
       label: "Interview 1",
       content:
-        "Interview 1: discovery call; discussed role scope, architecture expectations, and on-call policy.",
+        "Interview 1: indledende samtale; gennemgik rolleindhold, arkitekturforventninger og on-call politik.",
     },
     {
       value: "interview-2",
       label: "Interview 2",
       content:
-        "Interview 2: deeper tech conversation on API design and event-driven patterns; candidate wants clear ownership areas.",
+        "Interview 2: dybere teknisk dialog om API-design og event-drevne mønstre; kandidaten ønsker klare ejerområder.",
     },
     {
       value: "interview-3",
       label: "Interview 3",
       content:
-        "Interview 3: focus on team fit and leadership style; candidate values mentorship and transparent decision-making.",
+        "Interview 3: fokus på team-fit og ledelsesstil; kandidaten værdsætter mentoring og transparente beslutninger.",
     },
   ],
 };
