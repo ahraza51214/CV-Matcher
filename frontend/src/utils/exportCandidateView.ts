@@ -43,7 +43,7 @@ export function exportCandidateView({ result, pinnedCards }: ExportCandidateView
   printable.document.write(`<!doctype html>
     <html>
       <head>
-        <title>360 Degree Candidate View</title>
+        <title>360° Candidate View</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 24px; color: #111; }
           h1 { margin: 0 0 12px; }
@@ -56,7 +56,7 @@ export function exportCandidateView({ result, pinnedCards }: ExportCandidateView
         </style>
       </head>
       <body>
-        <h1>360 Degree Candidate View</h1>
+        <h1>360° Candidate View</h1>
         ${result ? `
           <div class="card">
             <div class="pill">Match Score: ${result.matchScore}/100</div>
