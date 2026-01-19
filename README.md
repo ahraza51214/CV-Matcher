@@ -2,6 +2,13 @@
 
 CV-Matcher is an AI-powered web application that analyzes how well a candidate’s CV aligns with a given job description. Built with FastAPI (Python) and Vite/React (TypeScript), it leverages ChatGPT (OpenAI) and Google Gemini models to evaluate uploaded PDFs or DOCX files and return a realistic match score (0–100) with pros, cons, and a short reasoning. The project follows SOLID principles and a clean architecture to ensure scalability, clarity, and easy provider swapping — demonstrating applied AI integration, modern full-stack development, and clean system design.
 
+## ✨ Key Features
+- AI Match Scoring: Upload CV + JD, pick provider (ChatGPT/Gemini/Claude/Fusion), get score, band, pros/cons, and reasoning.
+- Interactive UI: Upload panel, animated result panel with score bubble, and responsive motion choreography.
+- Context Explorer: Danish sample data across tools (Invenias, Survey, Copilot, TalentRiver, Quill) with “keep” to pin context cards and export them.
+- Export to PDF: “Export 360° Candidate View” prints match result plus pinned context cards to PDF/print dialog.
+- Clean Architecture: SOLID-aligned hooks/components, shared motion presets, and typed API layer for provider flexibility.
+
 🔧 Prerequisites
 
 - Python 3.10+ (same as your venv)
@@ -75,4 +82,6 @@ npm run dev
 
 - Upload a JD and a CV
 - Use the Provider toggle (ChatGPT/Gemini/Claude/Fusion)
-- Click Start AI Match Scoring
+- Click Evaluate to score; view animated score bubble, pros/cons, and reasoning
+- Open Context Explorer to browse candidate context data; keep/pin cards for later reference
+- Export 360° Candidate View to PDF/print (includes match result and pinned cards)
