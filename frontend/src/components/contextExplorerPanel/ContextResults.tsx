@@ -19,13 +19,43 @@ export function ContextResults({
   onUnpin,
 }: ContextResultsProps) {
   return (
-    <>
-      {/* Previously pinned cards stack */}
+    <div className="integration-results-stack">
+      {/* Currently viewed card with “keep” toggle appears first */}
+      <AnimatePresence initial={false}>
+        {currentCard && (
+          <motion.div
+            key={currentCard.id}
+            className="card card--result integration-result-card"
+            layout="position"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={undefined} // keep card visible on keep toggle to avoid flicker
+            transition={{ duration: 0.18 }}
+          >
+            <div className="integration-result-card__top">
+              <p className="integration-panel__pill">
+                {currentCard.tool} • {currentCard.label}
+              </p>
+              <button
+                type="button"
+                className={`integration-keep-btn ${keepCurrent ? "integration-keep-btn--active" : ""}`}
+                onClick={onToggleKeep}
+              >
+                {keepCurrent ? "Remove" : "Keep"}
+              </button>
+            </div>
+            <p className="integration-panel__text">{currentCard.content}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Previously pinned cards shown after the current selection */}
       <AnimatePresence initial={false}>
         {pinnedCards.map((card) => (
           <motion.div
             key={card.id}
             className="card card--result integration-result-card"
+            layout="position"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -47,34 +77,6 @@ export function ContextResults({
           </motion.div>
         ))}
       </AnimatePresence>
-
-      {/* Currently viewed card with “keep” toggle */}
-      <AnimatePresence initial={false}>
-        {currentCard && (
-          <motion.div
-            key={currentCard.id}
-            className="card card--result integration-result-card"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18 }}
-          >
-            <div className="integration-result-card__top">
-              <p className="integration-panel__pill">
-                {currentCard.tool} • {currentCard.label}
-              </p>
-              <button
-                type="button"
-                className={`integration-keep-btn ${keepCurrent ? "integration-keep-btn--active" : ""}`}
-                onClick={onToggleKeep}
-              >
-                {keepCurrent ? "Remove" : "Keep"}
-              </button>
-            </div>
-            <p className="integration-panel__text">{currentCard.content}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    </div>
   );
 }

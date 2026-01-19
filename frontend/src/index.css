@@ -131,6 +131,12 @@ textarea{
   margin-top: 16px;
 }
 
+.integration-results-stack{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 /* ------------------------------
    Header & provider toggle
 ------------------------------ */
