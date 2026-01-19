@@ -303,6 +303,12 @@ export function IntegrationExplorer({
               </select>
             </div>
 
+            {!canUseContext && (
+              <div className="integration-tip muted">
+                Tip: Evaluate a candidate to unlock the Candidate AI Context Explorer.
+              </div>
+            )}
+
             {tool && (
               <div className="integration-panel__secondary">
                 <label className="integration-panel__label" htmlFor="data-select">
@@ -395,12 +401,6 @@ export function IntegrationExplorer({
           )}
         </AnimatePresence>
       </motion.div>
-
-      {!canUseContext && (
-        <div className="integration-locked">
-          <p className="integration-locked__text">Evaluate a candidate to unlock the Candidate AI Context Explorer.</p>
-        </div>
-      )}
     </div>
   );
 }

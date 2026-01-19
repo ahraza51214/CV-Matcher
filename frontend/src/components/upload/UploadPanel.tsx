@@ -21,7 +21,7 @@ export function UploadPanel({
     <div className="upload-panel">
       <p className="eyebrow upload-panel__eyebrow">Candidate AI Job Matcher</p>
       <p className="upload-panel__description muted">
-        Upload <b>PDF/DOCX</b> for both CV and Job Description. Drag & drop or click to browse.
+        Upload candidate CV and job description here. Drag & drop or click to browse.
       </p>
 
       <Dropzone
@@ -43,11 +43,7 @@ export function UploadPanel({
       >
         {jdFile && <FilePill file={jdFile} onClear={() => onJd(null)} />}
       </Dropzone>
-
-      <div className="hint upload-panel__hint">
-        Tip: You can press <span className="kbd">Enter</span> on a dropzone to open the file picker.
-      </div>
-
+      
       <EvaluateButton disabled={disabled} loading={loading} onClick={onEvaluate} />
     </div>
   );
