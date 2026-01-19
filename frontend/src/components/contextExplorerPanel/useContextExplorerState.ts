@@ -7,11 +7,13 @@ import type { ResultCard, ToolId } from "./types";
 type UseContextExplorerStateProps = {
   resetSignal?: number;
   canUseContext: boolean;
+  onPinnedChange?: (cards: ResultCard[]) => void;
 };
 
 export function useContextExplorerState({
   resetSignal = 0,
   canUseContext,
+  onPinnedChange,
 }: UseContextExplorerStateProps) {
   const [tool, setTool] = useState<ToolId | "">("");
   const [option, setOption] = useState<string>("");
@@ -27,10 +29,7 @@ export function useContextExplorerState({
   const hasContent = !!currentCard || pinnedCards.length > 0;
 
   const finalizeCurrentIfKept = () => {
-    // If user toggled “keep,” move current card into pinned collection.
-    if (currentCard && keepCurrent) {
-      setPinnedCards((prev) => [currentCard, ...prev]);
-    }
+    // When navigating away, just clear the keep toggle; pinning happens immediately on toggle.
     setKeepCurrent(false);
   };
 
@@ -66,7 +65,27 @@ export function useContextExplorerState({
     }
   };
 
-  const toggleKeepCurrent = () => setKeepCurrent((v) => !v);
+  const toggleKeepCurrent = () => {
+    // Toggle keep state and immediately add/remove the current card in pinned list.
+    if (!currentCard) return;
+    setKeepCurrent((prev) => {
+      const next = !prev;
+      setPinnedCards((cards) => {
+        // Add when turning on; remove when turning off.
+        if (next) {
+          const exists = cards.some((c) => c.id === currentCard.id);
+          return exists ? cards : [currentCard, ...cards];
+        }
+        return cards.filter((c) => c.id !== currentCard.id);
+      });
+      return next;
+    });
+
+    // Reset selection so user is prompted to pick a new tool/option after keeping.
+    setTool("");
+    setOption("");
+    setCurrentCard(null);
+  };
 
   const handleUnpin = (id: string) => {
     // Remove a pinned card and clear current if it matches.
@@ -76,6 +95,12 @@ export function useContextExplorerState({
       setKeepCurrent(false);
     }
   };
+
+  useEffect(() => {
+    if (onPinnedChange) {
+      onPinnedChange(pinnedCards);
+    }
+  }, [pinnedCards, onPinnedChange]);
 
   useEffect(() => {
     // External reset: clear all selections when resetSignal changes or context locks.

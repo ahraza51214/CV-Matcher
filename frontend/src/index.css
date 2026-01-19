@@ -101,6 +101,12 @@ textarea{
   font-weight: 600;
   box-shadow: 0 10px 20px rgba(34,225,255,.15);
 }
+.btn.btn-success{
+  border: 1px solid #158b3d;
+  background: linear-gradient(135deg, #1db954, #17a44a);
+  color: #f6fff7;
+  box-shadow: 0 12px 22px rgba(23,164,74,.18);
+}
 
 /* Big CTA */
 .big-btn{
@@ -115,6 +121,14 @@ textarea{
   opacity: .55;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.upload-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
 }
 
 /* ------------------------------

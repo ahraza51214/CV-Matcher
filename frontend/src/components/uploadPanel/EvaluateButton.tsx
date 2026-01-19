@@ -16,6 +16,7 @@ export function EvaluateButton({
         className={`btn primary big-btn${isDisabled ? " big-btn-disabled" : ""}`}
         disabled={isDisabled}
         onClick={onClick}
+        type="button"
       >
         {loading ? "Evaluating…" : "Evaluate"}
       </button>

@@ -2,17 +2,27 @@
 import { Dropzone } from "./Dropzone";
 import { FilePill } from "./FilePill";
 import { EvaluateButton } from "./EvaluateButton";
+import { ExportButton } from "./ExportButton";
 
 const ACCEPT = ".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 export function UploadPanel({
-  cvFile, jdFile, onCv, onJd, onEvaluate, loading,
+  cvFile,
+  jdFile,
+  onCv,
+  onJd,
+  onEvaluate,
+  onExport,
+  exportDisabled,
+  loading,
 }: {
   cvFile: File | null;
   jdFile: File | null;
   onCv: (f: File | null) => void;
   onJd: (f: File | null) => void;
   onEvaluate: () => void;
+  onExport: () => void;
+  exportDisabled: boolean;
   loading?: boolean;
 }) {
   const ready = !!cvFile && !!jdFile;
@@ -47,7 +57,10 @@ export function UploadPanel({
         {jdFile && <FilePill file={jdFile} onClear={() => onJd(null)} />}
       </Dropzone>
       {/* Trigger evaluation when both files are ready */}
-      <EvaluateButton disabled={disabled} loading={loading} onClick={onEvaluate} />
+      <div className="upload-actions">
+        <EvaluateButton disabled={disabled} loading={loading} onClick={onEvaluate} />
+        <ExportButton disabled={exportDisabled} onClick={onExport} />
+      </div>
     </div>
   );
 }
