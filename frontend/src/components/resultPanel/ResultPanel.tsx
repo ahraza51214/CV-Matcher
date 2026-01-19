@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import type { MatchResponse } from "../../api/types";
-import { clamp0to100, scoreStyle } from "../../utils/score";
+import { clamp0to100, scoreStyle } from "./scoreBubbleStyle";
 import { Thinking } from "./Thinking";
 import { ScoreBubble } from "./ScoreBubble";
 import { SectionCard } from "./SectionCard";
