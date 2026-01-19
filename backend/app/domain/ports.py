@@ -1,4 +1,4 @@
-# backend/app/domain/ports.py
+"""Interfaces (ports) for external dependencies (LLM, embeddings)."""
 from typing import Protocol, List
 
 class LlmEvaluatorPort(Protocol):

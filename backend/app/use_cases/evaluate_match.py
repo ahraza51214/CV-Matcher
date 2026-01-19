@@ -1,3 +1,4 @@
+"""Use-case: evaluate a CV vs JD with a chosen LLM evaluator."""
 from ..domain.models import EvaluationRequest, EvaluationResult
 from ..domain.ports import LlmEvaluatorPort
 from ..services.prompts.simple_eval import SIMPLE_SYS, simple_user

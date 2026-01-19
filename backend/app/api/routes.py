@@ -1,8 +1,11 @@
+"""HTTP endpoints for match scoring and context explorer."""
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from ..services.readers.factory import read_any
 from ..domain.models import EvaluationRequest
 from ..config.container import build_use_case
 from ..config.settings import settings
+from .schemas import ToolSchema, ToolOptionSchema, ToolContentSchema
+from ..services.context.data import list_tools, list_options, get_content
 
 router = APIRouter()
 
@@ -39,3 +42,39 @@ async def match(
         return result.model_dump()
     finally:
         settings.provider = original  # restore
+
+
+@router.get("/tools", response_model=list[ToolSchema])
+async def get_tools():
+    """
+    List available context tools. Currently returns static/dummy data; replace with live integrations as needed.
+    """
+    return list_tools()
+
+
+@router.get("/tools/{tool_id}/options", response_model=list[ToolOptionSchema])
+async def get_tool_options(tool_id: str):
+    """
+    List options/data slices for a tool. Static demo data; wire to real tools when available.
+    """
+    opts = list_options(tool_id)
+    if not opts:
+        raise HTTPException(404, detail="Tool not found")
+    return [{"id": opt["id"], "label": opt["label"], "description": opt.get("content")} for opt in opts]
+
+
+@router.get("/tools/{tool_id}/options/{option_id}", response_model=ToolContentSchema)
+async def get_tool_option_content(tool_id: str, option_id: str):
+    """
+    Get content for a specific tool option. Returns aiRendered text from demo data.
+    """
+    content = get_content(tool_id, option_id)
+    if not content:
+        raise HTTPException(404, detail="Option not found")
+    return {
+        "toolId": tool_id,
+        "optionId": option_id,
+        "label": content["label"],
+        "aiRendered": content.get("content"),
+        "raw": content,
+    }

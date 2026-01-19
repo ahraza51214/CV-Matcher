@@ -1,3 +1,4 @@
+"""Domain models for evaluation requests/results."""
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict
 

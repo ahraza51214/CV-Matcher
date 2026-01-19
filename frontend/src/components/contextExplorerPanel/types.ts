@@ -13,3 +13,10 @@ export type ResultCard = {
   label: string;
   content: string;
 };
+
+export type ContextApiCard = {
+  tool: ToolId;
+  optionId: string;
+  label: string;
+  rendered: string;
+};

@@ -104,8 +104,9 @@ textarea{
 .btn.btn-success{
   border: 1px solid #158b3d;
   background: linear-gradient(135deg, #1db954, #17a44a);
-  color: #f6fff7;
+  color: #0b0d12;
   box-shadow: 0 12px 22px rgba(23,164,74,.18);
+  font-weight: 600;
 }
 
 /* Big CTA */

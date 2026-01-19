@@ -1,3 +1,4 @@
+"""Dependency container: chooses concrete evaluator implementations based on settings."""
 from .settings import settings
 from ..services.providers.openai_provider import OpenAILlmEvaluator
 from ..services.providers.gemini_provider import GeminiLlmEvaluator

@@ -5,7 +5,7 @@ CV-Matcher is an AI-powered web application that analyzes how well a candidate�
 ## ✨ Key Features
 - AI Match Scoring: Upload CV + JD, pick provider (ChatGPT/Gemini/Claude/Fusion), get score, band, pros/cons, and reasoning.
 - Interactive UI: Upload panel, animated result panel with score bubble, and responsive motion choreography.
-- Context Explorer: Danish sample data across tools (Invenias, Survey, Copilot, TalentRiver, Quill) with “keep” to pin context cards and export them.
+- Context Explorer: Danish sample data across tools (Invenias, Survey, Copilot, TalentRiver, Quill) with “keep” to pin context cards and export them. Can be wired to live tool endpoints via feature flag (see Context API).
 - Export to PDF: “Export 360° Candidate View” prints match result plus pinned context cards to PDF/print dialog.
 - Clean Architecture: SOLID-aligned hooks/components, shared motion presets, and typed API layer for provider flexibility.
 
@@ -66,6 +66,10 @@ uvicorn app.main:app --reload
 - POST /match — upload cv + jd (PDF/DOCX).
 - Optional query param: provider=ChatGPT|Gemini|Claude|Fusion (defaults to env PROVIDER). OpenAI is accepted as an alias for ChatGPT.
 - GET /health — simple ping.
+- Context Explorer (demo endpoints):
+  - GET /tools — list context tools
+  - GET /tools/{toolId}/options — list options for a tool
+  - GET /tools/{toolId}/options/{optionId} — get option content (static demo data; extend for live integrations)
 
 ## 🖥 Frontend — Setup & Run
 
@@ -85,3 +89,8 @@ npm run dev
 - Click Evaluate to score; view animated score bubble, pros/cons, and reasoning
 - Open Context Explorer to browse candidate context data; keep/pin cards for later reference
 - Export 360° Candidate View to PDF/print (includes match result and pinned cards)
+
+### Context Explorer (API-driven)
+- The Context Explorer uses a Context API client to fetch tools/options/content from backend endpoints.
+- Enable via env vars: `VITE_CONTEXT_API_ENABLED=true` and `VITE_CONTEXT_API_URL=http://localhost:8000` (or your host).
+- Backend demo endpoints return Danish sample content; replace with live tool integrations over time.

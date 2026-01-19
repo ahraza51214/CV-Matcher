@@ -1,14 +1,21 @@
 // Encapsulates context explorer selections, pinned cards, and reset logic.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { createCard, TOOL_DATA } from "./contextData";
-import type { ResultCard, ToolId } from "./types";
+import type { ResultCard, ToolId, ToolOption } from "./types";
+import { fetchContent, fetchOptions } from "../../api/context";
 
 type UseContextExplorerStateProps = {
   resetSignal?: number;
   canUseContext: boolean;
   onPinnedChange?: (cards: ResultCard[]) => void;
 };
+
+const createCard = (toolId: ToolId, opt: { value: string; label: string; content: string }): ResultCard => ({
+  id: `${toolId}-${opt.value}-${Date.now()}`,
+  tool: toolId,
+  label: opt.label,
+  content: opt.content,
+});
 
 export function useContextExplorerState({
   resetSignal = 0,
@@ -20,13 +27,26 @@ export function useContextExplorerState({
   const [currentCard, setCurrentCard] = useState<ResultCard | null>(null);
   const [pinnedCards, setPinnedCards] = useState<ResultCard[]>([]);
   const [keepCurrent, setKeepCurrent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const optionsForTool = useMemo(
-    () => (tool ? TOOL_DATA[tool] : []),
-    [tool],
-  );
+  const [optionsForTool, setOptionsForTool] = useState<ToolOption[]>([]);
 
   const hasContent = !!currentCard || pinnedCards.length > 0;
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadOptions = async () => {
+      if (!tool) {
+        setOptionsForTool([]);
+        return;
+      }
+      const opts = await fetchOptions(tool);
+      if (!cancelled) setOptionsForTool(opts.map((o) => ({ value: o.id, label: o.label, content: o.description || "" })));
+    };
+    loadOptions();
+    return () => { cancelled = true; };
+  }, [tool]);
 
   const finalizeCurrentIfKept = () => {
     // When navigating away, just clear the keep toggle; pinning happens immediately on toggle.
@@ -59,10 +79,30 @@ export function useContextExplorerState({
     }
 
     const currentTool = tool as ToolId;
-    const target = TOOL_DATA[currentTool].find((opt) => opt.value === value);
-    if (target) {
-      setCurrentCard(createCard(currentTool, target));
-    }
+    const target = optionsForTool.find((opt) => opt.value === value);
+    const label = target?.label ?? value;
+
+    // Fetch live content and display it (no local dummy fallback).
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetchContent(currentTool, value);
+        if (res?.aiRendered) {
+          setCurrentCard(createCard(currentTool, { value, label: res.label, content: res.aiRendered }));
+        } else if (res) {
+          setCurrentCard(createCard(currentTool, { value, label: res.label, content: "Ingen data tilgængelig." }));
+        } else {
+          setError("Ingen data fundet.");
+          setCurrentCard(null);
+        }
+      } catch (e) {
+        setError("Kunne ikke hente data fra værktøjet.");
+        setCurrentCard(null);
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
   const toggleKeepCurrent = () => {
@@ -119,6 +159,8 @@ export function useContextExplorerState({
     pinnedCards,
     keepCurrent,
     hasContent,
+    loading,
+    error,
     handleToolChange,
     handleOptionChange,
     toggleKeepCurrent,
