@@ -1,3 +1,4 @@
+// Renders a titled list section for pros/cons or reasoning snippets.
 export function SectionCard({ title, items }: { title: string; items: string[] }) {
   const safe = Array.isArray(items) ? items : [];
   return (
@@ -7,7 +8,7 @@ export function SectionCard({ title, items }: { title: string; items: string[] }
         <div className="muted section-card__empty">—</div>
       ) : (
         <ul className="section-card__list">
-          {safe.map((t, i) => <li key={`${title}-${i}`}>{t}</li>)}
+          {safe.map((t, i) => <li key={`${title}-${i}`}>{t}</li>) /* Render each bullet point */}
         </ul>
       )}
     </div>

@@ -1,3 +1,4 @@
+// Shared API shapes for providers and match responses.
 export type Provider = "ChatGPT" | "Gemini" | "Claude" | "Fusion";
 
 export type MatchResponse = {

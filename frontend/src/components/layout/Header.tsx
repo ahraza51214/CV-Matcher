@@ -1,3 +1,4 @@
+// Top header bar showing brand and provider toggle control.
 import type { Provider } from "../../api/types";
 import { ProviderToggle } from "./ProviderToggle";
 

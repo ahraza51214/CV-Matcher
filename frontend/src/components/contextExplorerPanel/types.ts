@@ -1,3 +1,4 @@
+// Shared types for context explorer tools, options, and rendered cards.
 export type ToolId = "Invenias" | "Survey" | "Copilot" | "TalentRiver" | "Quill";
 
 export type ToolOption = {

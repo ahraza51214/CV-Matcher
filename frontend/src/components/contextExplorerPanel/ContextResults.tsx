@@ -1,3 +1,4 @@
+// Lists pinned and current context cards with entry/exit animations.
 import { AnimatePresence, motion } from "framer-motion";
 
 import type { ResultCard } from "./types";
@@ -19,6 +20,7 @@ export function ContextResults({
 }: ContextResultsProps) {
   return (
     <>
+      {/* Previously pinned cards stack */}
       <AnimatePresence initial={false}>
         {pinnedCards.map((card) => (
           <motion.div
@@ -46,6 +48,7 @@ export function ContextResults({
         ))}
       </AnimatePresence>
 
+      {/* Currently viewed card with “keep” toggle */}
       <AnimatePresence initial={false}>
         {currentCard && (
           <motion.div

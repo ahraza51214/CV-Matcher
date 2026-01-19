@@ -1,3 +1,4 @@
+// Footer copy summarizing the product vision.
 export function Footer() {
   return (
     <footer className="footer">

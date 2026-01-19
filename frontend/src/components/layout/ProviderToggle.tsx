@@ -1,3 +1,4 @@
+// Toggle buttons to switch the active LLM provider.
 import type { Provider } from "../../api/types";
 
 type Props = {
@@ -13,6 +14,7 @@ export function ProviderToggle({ provider, onChange }: Props) {
       {providers.map((p) => (
         <button
           key={p}
+          // Update selected provider when clicked
           onClick={() => onChange(p)}
           className={`provider-toggle__btn${provider === p ? " provider-toggle__btn--active" : ""}`}
         >

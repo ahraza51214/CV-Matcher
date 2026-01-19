@@ -1,3 +1,4 @@
+// Manages local CV/JD file selections and readiness flag.
 import { useState } from "react";
 
 export function useUploadState() {

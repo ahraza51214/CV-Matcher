@@ -1,3 +1,4 @@
+// Exposes panel animation targets plus close/exit helpers for upload/result layout.
 import { useRef } from "react";
 
 /**
@@ -17,6 +18,7 @@ export function usePanelsChoreography(
   const uploadAnimate = started ? "left" : "center";
 
   const requestClose = () => {
+    // Defer closing logic to caller to control state resets.
     dismiss();
   };
 

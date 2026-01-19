@@ -1,3 +1,4 @@
+// Shared motion presets controlling stage and panel animations across the app.
 import type { Variants, Transition } from "framer-motion";
 
 /** Cinematic timing shared by both panels */

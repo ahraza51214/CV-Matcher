@@ -1,3 +1,4 @@
+// Handles evaluation lifecycle: submission, loading/error state, and dismissal.
 import { useState } from "react";
 import type { Provider, MatchResponse } from "../api/types";
 import { evaluateUpload } from "../api/match";
@@ -15,6 +16,7 @@ export function useEvaluation(provider: Provider) {
   const [started, setStarted] = useState(false);
 
   async function run(cv: File | null, jd: File | null) {
+    // Reset state and start spinner each time we run.
     setError(null);
     setResult(null);
     setStarted(true);
@@ -24,6 +26,7 @@ export function useEvaluation(provider: Provider) {
       if (!cv || !jd) {
         throw new Error("Please upload both CV and Job Description (PDF/DOCX).");
       }
+      // Call backend match endpoint and store response.
       const r = await evaluateUpload(provider, cv, jd);
       setResult(r);
     } catch (e) {
@@ -35,6 +38,7 @@ export function useEvaluation(provider: Provider) {
 
   /** Close the result panel and restore the initial (centered) layout */
   function dismiss() {
+    // Clear all transient state so UI returns to upload-only view.
     setLoading(false);
     setResult(null);
     setError(null);

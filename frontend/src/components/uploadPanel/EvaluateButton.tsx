@@ -1,3 +1,4 @@
+// Primary CTA for triggering evaluation with loading/disabled states.
 export function EvaluateButton({
   disabled,
   onClick,

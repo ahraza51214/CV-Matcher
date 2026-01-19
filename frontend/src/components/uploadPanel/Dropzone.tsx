@@ -1,3 +1,4 @@
+// File drop/pick input wrapper with drag-over feedback for CV/JD uploads.
 import { Upload } from "lucide-react";
 import { useRef, useState, useCallback } from "react";
 
@@ -20,6 +21,7 @@ export function Dropzone({
   const [active, setActive] = useState(false);
   const pick = () => inputRef.current?.click();
 
+  // Handle file drop from OS.
   const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault(); e.stopPropagation(); setActive(false);
     onPick(e.dataTransfer.files?.[0] ?? null);
@@ -37,6 +39,7 @@ export function Dropzone({
         onClick={pick}
         role="button"
         tabIndex={0}
+        // Allow keyboard activation to open file picker
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && pick()}
       >
         {children ?? (
@@ -52,6 +55,7 @@ export function Dropzone({
           type="file"
           accept={accept}
           onChange={(e) => {
+            // Forward chosen file then clear input to allow re-selection of same file later.
             onPick(e.target.files?.[0] ?? null);
             e.target.value = ""; // allow picking the same file again after reset/close
           }}

@@ -1,3 +1,4 @@
+// Coordinates context explorer controls/results with shared panel animations.
 import { AnimatePresence, motion } from "framer-motion";
 
 import { usePanelsChoreography } from "../../hooks/usePanelsChoreography";
@@ -15,6 +16,7 @@ export function ContextExplorerPanel({
   resetSignal = 0,
   canUseContext = true,
 }: ContextExplorerPanelProps) {
+  // Local state/actions for tool selection and cards.
   const {
     tool,
     option,
@@ -29,6 +31,7 @@ export function ContextExplorerPanel({
     handleUnpin,
   } = useContextExplorerState({ resetSignal, canUseContext });
 
+  // Drive staging/animation based on whether we have content to show.
   const { showResults, stageAnimate, uploadAnimate, onExitComplete } = usePanelsChoreography(hasContent, () => {});
 
   return (

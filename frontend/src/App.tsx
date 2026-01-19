@@ -1,3 +1,4 @@
+// Root application shell wiring upload, result, and context explorer panels with shared motion choreography.
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -21,9 +22,13 @@ import {
 import type { Provider } from "./api/types";
 
 export default function App() {
+  // Active LLM provider for evaluation requests.
   const [provider, setProvider] = useState<Provider>("ChatGPT");
+  // Used to force-reset context explorer state after closing results.
   const [integrationReset, setIntegrationReset] = useState(0);
+  // File uploads for CV and JD.
   const { cvFile, jdFile, setCvFile, setJdFile } = useUploadState();
+  // Evaluation lifecycle (loading/result/error + start/stop).
   const { result, loading, error, started, run, dismiss } = useEvaluation(provider);
 
   // All the “closing/width-lock” choreography lives in this hook
@@ -38,6 +43,7 @@ export default function App() {
   } = usePanelsChoreography(started, dismiss);
 
   const handleCloseResults = () => {
+    // Reset everything when user closes results.
     setCvFile(null);
     setJdFile(null);
     setIntegrationReset((n) => n + 1);

@@ -1,21 +1,20 @@
+// Visual bubble displaying match score with animated entrance.
 import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 
-export function ScoreBubble({
-  bg,
-  border,
-  text,
-  score,
-  band,
-}: {
-  bg: string;
-  border: string;
-  text: string;
+import type { ScoreStyle } from "../../utils/scoreBubbleStyle";
+
+type ScoreBubbleProps = {
   score: number;
-  band: string;
-}) {
+  style: ScoreStyle;
+};
+
+export function ScoreBubble({ score, style }: ScoreBubbleProps) {
+  const { bg, border, text, band } = style;
   return (
     <motion.div
       className="score-bubble score-bubble--modern"
+      // Fly in from center on initial render.
       initial={{ top: "50%", left: "50%", x: "-50%", y: "-50%", opacity: 0, scale: 1 }}
       animate={{ top: 8, left: 8, x: 0, y: 0, opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 240, damping: 24 }}
@@ -23,7 +22,7 @@ export function ScoreBubble({
         background: bg,
         borderColor: border,
         color: text,
-        ["--sb-accent" as keyof React.CSSProperties]: border,
+        ["--sb-accent" as keyof CSSProperties]: border,
       }}
     >
       <div className="score-inner">

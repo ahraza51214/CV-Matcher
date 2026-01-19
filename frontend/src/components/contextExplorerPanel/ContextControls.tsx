@@ -1,3 +1,4 @@
+// Control panel for picking a tool and data option in the context explorer.
 import type { ToolId, ToolOption } from "./types";
 
 type ContextControlsProps = {
@@ -26,6 +27,7 @@ export function ContextControls({
       </div>
 
       <div className="integration-panel__controls">
+        {/* Primary tool selector */}
         <label className="integration-panel__label" htmlFor="tool-select">
           Select tool
         </label>
@@ -53,6 +55,7 @@ export function ContextControls({
         )}
 
         {tool && (
+          /* Secondary selector for data options inside chosen tool */
           <div className="integration-panel__secondary">
             <label className="integration-panel__label" htmlFor="data-select">
               Select data option from {tool}

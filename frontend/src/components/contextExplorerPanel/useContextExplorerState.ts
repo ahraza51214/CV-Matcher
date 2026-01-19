@@ -1,3 +1,4 @@
+// Encapsulates context explorer selections, pinned cards, and reset logic.
 import { useEffect, useMemo, useState } from "react";
 
 import { createCard, TOOL_DATA } from "./contextData";
@@ -26,6 +27,7 @@ export function useContextExplorerState({
   const hasContent = !!currentCard || pinnedCards.length > 0;
 
   const finalizeCurrentIfKept = () => {
+    // If user toggled “keep,” move current card into pinned collection.
     if (currentCard && keepCurrent) {
       setPinnedCards((prev) => [currentCard, ...prev]);
     }
@@ -33,6 +35,7 @@ export function useContextExplorerState({
   };
 
   const handleToolChange = (value: string) => {
+    // Reset current view when switching tools.
     finalizeCurrentIfKept();
     if (value === "") {
       setTool("");
@@ -47,6 +50,7 @@ export function useContextExplorerState({
   };
 
   const handleOptionChange = (value: string) => {
+    // Swap cards when picking another data option.
     finalizeCurrentIfKept();
     setOption(value);
 
@@ -65,6 +69,7 @@ export function useContextExplorerState({
   const toggleKeepCurrent = () => setKeepCurrent((v) => !v);
 
   const handleUnpin = (id: string) => {
+    // Remove a pinned card and clear current if it matches.
     setPinnedCards((prev) => prev.filter((card) => card.id !== id));
     if (currentCard && currentCard.id === id) {
       setCurrentCard(null);
@@ -73,6 +78,7 @@ export function useContextExplorerState({
   };
 
   useEffect(() => {
+    // External reset: clear all selections when resetSignal changes or context locks.
     setTool("");
     setOption("");
     setCurrentCard(null);

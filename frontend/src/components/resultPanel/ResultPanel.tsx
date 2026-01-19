@@ -1,6 +1,7 @@
+// Presents evaluation result data with score bubble, reasoning, and pros/cons.
 import { AnimatePresence } from "framer-motion";
 import type { MatchResponse } from "../../api/types";
-import { clamp0to100, scoreStyle } from "./scoreBubbleStyle";
+import { clamp0to100, scoreStyle } from "../../utils/scoreBubbleStyle";
 import { Thinking } from "./Thinking";
 import { ScoreBubble } from "./ScoreBubble";
 import { SectionCard } from "./SectionCard";
@@ -14,6 +15,7 @@ export function ResultPanel({
   onClose?: () => void;
 }) {
   const hasResult = !!result && !loading && !error;
+  // Clamp score and derive palette/band for display.
   const score = hasResult ? clamp0to100(result!.matchScore) : 0;
   const { bg, border, text, band } = scoreStyle(score);
 
@@ -38,17 +40,19 @@ export function ResultPanel({
         <AnimatePresence mode="popLayout">
           {loading && !error && <Thinking />}
           {hasResult && (
-            <ScoreBubble bg={bg} border={border} text={text} score={score} band={band} />
+            <ScoreBubble score={score} style={{ bg, border, text, band }} />
           )}
         </AnimatePresence>
 
         <div className="result-panel__sections">
+          {/* Summary narrative */}
           {hasResult && result?.reasoning && (
             <div className="bordered section-card result-panel__reasoning">
               <div className="muted section-card__title">Summary</div>
               <p className="section-card__text">{result.reasoning}</p>
             </div>
           )}
+          {/* Pros/cons lists */}
           {hasResult && <SectionCard title="Pros" items={result?.pros || []} />}
           {hasResult && <SectionCard title="Cons" items={result?.cons || []} />}
           {!loading && !error && !hasResult && (

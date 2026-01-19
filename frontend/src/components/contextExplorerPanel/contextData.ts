@@ -1,3 +1,4 @@
+// Static sample data and helper for generating context explorer result cards.
 import type { ResultCard, ToolId, ToolOption } from "./types";
 
 export const TOOL_DATA: Record<ToolId, ToolOption[]> = {
