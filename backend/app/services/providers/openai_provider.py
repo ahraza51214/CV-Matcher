@@ -8,6 +8,8 @@ class OpenAILlmEvaluator:
     """Concrete ChatGPT (OpenAI) adapter. Exposes eval_json(system, user) -> dict."""
 
     async def eval_json(self, system: str, user: str) -> dict:
+        if not settings.openai_api_key:
+            raise RuntimeError("OpenAI API key is not configured. Set OPENAI_API_KEY or openai_api_key in .env.")
         try:
             async with httpx.AsyncClient(timeout=120) as c:
                 r = await c.post(

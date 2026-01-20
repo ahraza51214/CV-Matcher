@@ -3,7 +3,6 @@ from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from ..services.readers.factory import read_any
 from ..domain.models import EvaluationRequest
 from ..config.container import build_use_case
-from ..config.settings import settings
 from .schemas import ToolSchema, ToolOptionSchema, ToolContentSchema
 from ..services.context.data import list_tools, list_options, get_content
 
@@ -22,26 +21,18 @@ async def match(
     if not jd_text.strip():
         raise HTTPException(400, detail="Job description appears empty after parsing (scanned PDF?).")
 
-    # Temporarily switch provider if query param is present
-    original = settings.provider
-    if provider:
-        aliases = {
-            "chatgpt": "ChatGPT",
-            "openai": "ChatGPT",
-            "gemini": "Gemini",
-            "claude": "Claude",
-            "fusion": "Fusion",
-        }
-        normalized = aliases.get(provider.lower())
-        if normalized:
-            settings.provider = normalized  # override for this request only
+    aliases = {
+        "chatgpt": "ChatGPT",
+        "openai": "ChatGPT",
+        "gemini": "Gemini",
+        "claude": "Claude",
+        "fusion": "Fusion",
+    }
+    normalized_provider = aliases.get(provider.lower()) if provider else None
 
-    try:
-        use_case = build_use_case()
-        result = await use_case(EvaluationRequest(cv_text=cv_text, jd_text=jd_text))
-        return result.model_dump()
-    finally:
-        settings.provider = original  # restore
+    use_case = build_use_case(provider_override=normalized_provider)
+    result = await use_case(EvaluationRequest(cv_text=cv_text, jd_text=jd_text))
+    return result.model_dump()
 
 
 @router.get("/tools", response_model=list[ToolSchema])

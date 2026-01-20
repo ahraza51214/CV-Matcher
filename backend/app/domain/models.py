@@ -12,5 +12,6 @@ class EvaluationResult(BaseModel):
     pros: List[str]
     cons: List[str]
     reasoning: Optional[str] = None
+
     # keep a flexible bag for future metadata, without breaking clients
-    meta: Dict[str, float] = {}  
+    meta: Dict[str, float] = Field(default_factory=dict)

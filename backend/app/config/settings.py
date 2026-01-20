@@ -3,8 +3,6 @@ settings.py
 ------------
 Centralized configuration for environment variables and API credentials.
 This file reads values from `.env` and exposes them via a typed Settings object.
-
-Applies SRP (Single Responsibility): configuration loading only.
 """
 
 from pydantic_settings import BaseSettings

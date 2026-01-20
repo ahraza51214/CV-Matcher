@@ -4,11 +4,11 @@ from ..services.providers.openai_provider import OpenAILlmEvaluator
 from ..services.providers.gemini_provider import GeminiLlmEvaluator
 from ..services.providers.claude_provider import ClaudeLlmEvaluator
 from ..services.providers.fusion_provider import FusionLlmEvaluator
-from ..use_cases.evaluate_match import EvaluateMatchUseCase
+from ..services.evaluator.evaluate_match import EvaluateMatchUseCase
 
-def build_use_case() -> EvaluateMatchUseCase:
-    """Select concrete provider based on .env (DIP)."""
-    provider = settings.provider.lower()
+def build_use_case(provider_override: str | None = None) -> EvaluateMatchUseCase:
+    """Select concrete provider based on request or .env."""
+    provider = (provider_override or settings.provider).lower()
 
     if provider in ("chatgpt", "openai"):
         evaluator = OpenAILlmEvaluator()
@@ -27,4 +27,4 @@ def build_use_case() -> EvaluateMatchUseCase:
         )
     else:
         evaluator = OpenAILlmEvaluator()
-    return EvaluateMatchUseCase(evaluator=evaluator)
+    return EvaluateMatchUseCase(evaluator=evaluator, provider=provider)
