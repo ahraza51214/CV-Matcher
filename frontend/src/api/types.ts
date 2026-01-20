@@ -7,5 +7,8 @@ export type MatchResponse = {
   pros: string[];
   cons: string[];
   reasoning?: string | null;
-  meta?: Record<string, unknown>;
+  meta?: {
+    jdText?: string;
+    [key: string]: unknown;
+  };
 };

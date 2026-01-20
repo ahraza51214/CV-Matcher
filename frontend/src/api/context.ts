@@ -18,6 +18,12 @@ export type ContextContent = {
   updatedAt?: string;
 };
 
+export type ContextSummary = {
+  toolId: ToolId;
+  optionId: string;
+  summary: string;
+};
+
 const BASE_URL = import.meta.env.VITE_CONTEXT_API_URL;
 const ENABLED = import.meta.env.VITE_CONTEXT_API_ENABLED === "true";
 
@@ -46,4 +52,31 @@ export async function fetchOptions(toolId: ToolId): Promise<ContextOption[]> {
 export async function fetchContent(toolId: ToolId, optionId: string): Promise<ContextContent | null> {
   const live = await safeFetch<ContextContent>(`/tools/${toolId}/options/${optionId}`);
   return live;
+}
+
+export async function fetchSummary(toolId: ToolId, optionId: string): Promise<ContextSummary | null> {
+  const live = await safeFetch<ContextSummary>(`/tools/${toolId}/options/${optionId}/summary`);
+  return live;
+}
+
+export async function fetchResonance(params: {
+  toolId: ToolId;
+  optionId: string;
+  jdText: string;
+  matchScore: number;
+}): Promise<ContextSummary | null> {
+  if (!ENABLED || !BASE_URL) return null;
+  try {
+    const { toolId, optionId, jdText, matchScore } = params;
+    const res = await fetch(`${BASE_URL}/tools/${toolId}/options/${optionId}/resonance`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jd_text: jdText, match_score: matchScore }),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as ContextSummary;
+  } catch (e) {
+    console.warn("contextApi resonance fetch failed", e);
+    return null;
+  }
 }

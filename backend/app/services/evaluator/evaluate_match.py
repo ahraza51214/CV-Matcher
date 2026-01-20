@@ -32,7 +32,8 @@ class EvaluateMatchUseCase:
             pros       = list(data.get("pros", []) or []),
             cons       = list(data.get("cons", []) or []),
             reasoning  = data.get("reasoning"),
-            meta       = {},  # place for future numeric breakdown
+            # Keep a small snippet of the JD to support downstream resonance summaries.
+            meta       = {"jdText": (req.jd_text or "")[:1500]},
         )
 
     @staticmethod

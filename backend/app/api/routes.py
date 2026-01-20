@@ -1,16 +1,24 @@
 """HTTP endpoints for match scoring and context explorer."""
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
+from pydantic import BaseModel
 from ..services.readers.factory import read_any
 from ..domain.models import EvaluationRequest
 from ..config.container import (
     build_use_case,
     build_tool_context_use_case,
     build_tool_resonance_use_case,
+    build_tool_adapter,
 )
 from .schemas import ToolSchema, ToolOptionSchema, ToolContentSchema
-from ..services.context.data import list_tools, list_options, get_content
 
 router = APIRouter()
+# Use a shared adapter instance for the demo tool data.
+tool_adapter = build_tool_adapter()
+
+
+class ResonanceRequest(BaseModel):
+    jd_text: str
+    match_score: int
 
 @router.post("/match")
 async def match(
@@ -45,7 +53,7 @@ async def get_tools():
     """
     List available context tools. Currently returns static/dummy data; replace with live integrations as needed.
     """
-    return list_tools()
+    return tool_adapter.list_tools()
 
 
 @router.get("/tools/{tool_id}/options", response_model=list[ToolOptionSchema])
@@ -53,7 +61,7 @@ async def get_tool_options(tool_id: str):
     """
     List options/data slices for a tool. Static demo data; wire to real tools when available.
     """
-    opts = list_options(tool_id)
+    opts = tool_adapter.list_options(tool_id)
     if not opts:
         raise HTTPException(404, detail="Tool not found")
     return [{"id": opt["id"], "label": opt["label"], "description": opt.get("content")} for opt in opts]
@@ -64,7 +72,7 @@ async def get_tool_option_content(tool_id: str, option_id: str):
     """
     Get content for a specific tool option. Returns aiRendered text from demo data.
     """
-    content = get_content(tool_id, option_id)
+    content = tool_adapter.get_content(tool_id, option_id)
     if not content:
         raise HTTPException(404, detail="Option not found")
     return {
@@ -85,7 +93,7 @@ async def summarize_tool_option(
     """
     Summarize a tool option's content via the LLM so the frontend doesn't need raw provider access.
     """
-    content = get_content(tool_id, option_id)
+    content = tool_adapter.get_content(tool_id, option_id)
     if not content:
         raise HTTPException(404, detail="Option not found")
 
@@ -112,15 +120,14 @@ async def summarize_tool_option(
 async def resonate_tool_option(
     tool_id: str,
     option_id: str,
-    jd_text: str,
-    match_score: int,
+    payload: ResonanceRequest,
     provider: str | None = Query(None, description="Provider to use for resonance summary"),
 ):
     """
     Produce a <=50 word summary relating tool content to the JD and existing match score.
     This does not alter the score; it only generates display text.
     """
-    content = get_content(tool_id, option_id)
+    content = tool_adapter.get_content(tool_id, option_id)
     if not content:
         raise HTTPException(404, detail="Option not found")
 
@@ -135,8 +142,8 @@ async def resonate_tool_option(
 
     use_case = build_tool_resonance_use_case(provider_override=normalized_provider)
     summary = await use_case(
-        jd_text=jd_text,
-        match_score=match_score,
+        jd_text=payload.jd_text,
+        match_score=payload.match_score,
         tool_label=content["label"],
         content=content.get("content") or "",
     )

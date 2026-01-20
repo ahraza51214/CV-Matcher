@@ -7,6 +7,7 @@ from ..services.providers.fusion_provider import FusionLlmEvaluator
 from ..services.evaluator.evaluate_match import EvaluateMatchUseCase
 from ..services.evaluator.evaluate_tool_context import EvaluateToolContextUseCase
 from ..services.evaluator.evaluate_tool_resonance import EvaluateToolResonanceUseCase
+from ..services.tools import DummyToolAdapter
 
 def build_use_case(provider_override: str | None = None) -> EvaluateMatchUseCase:
     """Select concrete provider based on request or .env."""
@@ -25,6 +26,11 @@ def build_tool_resonance_use_case(provider_override: str | None = None) -> Evalu
     provider = (provider_override or settings.provider).lower()
     evaluator = _select_evaluator(provider)
     return EvaluateToolResonanceUseCase(evaluator=evaluator)
+
+
+def build_tool_adapter():
+    """Factory for the tool adapter; currently returns the demo adapter."""
+    return DummyToolAdapter()
 
 
 def _select_evaluator(provider: str):

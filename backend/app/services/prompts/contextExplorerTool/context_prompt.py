@@ -4,7 +4,7 @@
 CONTEXT_SYS = (
     "You summarize external tool data for recruiters. "
     "Extract only the most relevant facts that help evaluate a CV against a job description. "
-    "Keep it concise and factual."
+    "Keep it concise and factual. Return JSON only: {\"summary\": \"...\"}."
 )
 
 def context_user(tool_label: str, content: str) -> str:
@@ -14,7 +14,7 @@ def context_user(tool_label: str, content: str) -> str:
     """
     return f"""
 Summarize the following context from the tool "{tool_label}" into 3-5 bullet points.
-Focus on signals useful for judging CV fit. Answer in Danish.
+Focus on signals useful for judging CV fit. Answer in Danish. Return only JSON with a 'summary' field.
 
 --- TOOL CONTEXT ---
 \"\"\"{content or ''}\"\"\"

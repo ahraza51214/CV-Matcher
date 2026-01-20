@@ -14,4 +14,4 @@ class EvaluationResult(BaseModel):
     reasoning: Optional[str] = None
 
     # keep a flexible bag for future metadata, without breaking clients
-    meta: Dict[str, float] = Field(default_factory=dict)
+    meta: Dict[str, object] = Field(default_factory=dict)

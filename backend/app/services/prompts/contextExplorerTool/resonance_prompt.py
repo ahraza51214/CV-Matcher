@@ -6,18 +6,18 @@ RESONANCE_SYS = (
     "You will be given: (1) job description text, (2) a match score already computed, "
     "and (3) external tool context. "
     "Do not change the score. Summarize how the tool context relates to the job and the score "
-    "in at most 50 words. Keep it neutral and concise."
+    "in at most 50 words. Keep it neutral and concise. "
+    "Return JSON only: {\"summary\": \"...\"}."
 )
 
 def resonance_user(jd_text: str, match_score: int, tool_label: str, content: str) -> str:
     """
-    Build a user prompt that asks the model to relate tool context to the JD and existing score.
+    Build a user prompt that asks the model to relate tool context data to the JD and existing score.
     This keeps evaluation separate from scoring.
     """
     return f"""
-Job match score (already decided): {match_score}/100. Do not change it.
-Summarize in <=50 words how the tool context relates to the job description and this score.
-Write in Danish. Be concise and neutral.
+Summarize in <=50 words how the tool context relates to the job description and this score. Use real tool name and option. Do not use tool context word.
+Write in Danish. Be concise and neutral. Return only JSON with a 'summary' field.
 
 --- JOB DESCRIPTION ---
 \"\"\"{jd_text or ''}\"\"\"

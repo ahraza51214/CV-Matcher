@@ -7,17 +7,20 @@ import { ContextControls } from "./ContextControls";
 import { ContextResults } from "./ContextResults";
 import { useContextExplorerState } from "./useContextExplorerState";
 import type { ResultCard } from "./types";
+import type { MatchResponse } from "../../api/types";
 
 type ContextExplorerPanelProps = {
   resetSignal?: number;
   canUseContext?: boolean;
   onPinnedChange?: (cards: ResultCard[]) => void;
+  matchResult?: MatchResponse | null;
 };
 
 export function ContextExplorerPanel({
   resetSignal = 0,
   canUseContext = true,
   onPinnedChange,
+  matchResult,
 }: ContextExplorerPanelProps) {
   // Local state/actions for tool selection and cards.
   const {
@@ -32,7 +35,7 @@ export function ContextExplorerPanel({
     handleOptionChange,
     toggleKeepCurrent,
     handleUnpin,
-  } = useContextExplorerState({ resetSignal, canUseContext, onPinnedChange });
+  } = useContextExplorerState({ resetSignal, canUseContext, onPinnedChange, matchResult });
 
   // Drive staging/animation based on whether we have content to show.
   const { showResults, stageAnimate, uploadAnimate, onExitComplete } = usePanelsChoreography(hasContent, () => {});

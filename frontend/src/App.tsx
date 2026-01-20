@@ -120,6 +120,7 @@ export default function App() {
         resetSignal={integrationReset}
         canUseContext={started}
         onPinnedChange={handlePinnedChange}
+        matchResult={result}
       />
 
       <Footer />

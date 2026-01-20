@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 
 import type { ResultCard, ToolId, ToolOption } from "./types";
-import { fetchContent, fetchOptions } from "../../api/context";
+import { fetchContent, fetchOptions, fetchResonance } from "../../api/context";
+import type { MatchResponse } from "../../api/types";
 
 type UseContextExplorerStateProps = {
   resetSignal?: number;
   canUseContext: boolean;
   onPinnedChange?: (cards: ResultCard[]) => void;
+  matchResult?: MatchResponse | null;
 };
 
 const createCard = (toolId: ToolId, opt: { value: string; label: string; content: string }): ResultCard => ({
@@ -21,6 +23,7 @@ export function useContextExplorerState({
   resetSignal = 0,
   canUseContext,
   onPinnedChange,
+  matchResult,
 }: UseContextExplorerStateProps) {
   const [tool, setTool] = useState<ToolId | "">("");
   const [option, setOption] = useState<string>("");
@@ -82,16 +85,33 @@ export function useContextExplorerState({
     const target = optionsForTool.find((opt) => opt.value === value);
     const label = target?.label ?? value;
 
-    // Fetch live content and display it (no local dummy fallback).
+    // Fetch live content and, if a match result exists, ask the backend to relate it to the score/JD.
     (async () => {
       setLoading(true);
       setError(null);
       try {
         const res = await fetchContent(currentTool, value);
-        if (res?.aiRendered) {
-          setCurrentCard(createCard(currentTool, { value, label: res.label, content: res.aiRendered }));
-        } else if (res) {
-          setCurrentCard(createCard(currentTool, { value, label: res.label, content: "Ingen data tilgængelig." }));
+        const baseContent = res?.aiRendered || "Ingen data tilgængelig.";
+
+        const jdSnippet = (matchResult?.meta?.jdText as string | undefined) || "";
+        const score = matchResult?.matchScore;
+        let displayContent = baseContent;
+
+        // Only request resonance if we have both a score and JD text.
+        if (res && score !== undefined && jdSnippet) {
+          const resonance = await fetchResonance({
+            toolId: currentTool,
+            optionId: value,
+            jdText: jdSnippet,
+            matchScore: score,
+          });
+          if (resonance?.summary) {
+            displayContent = resonance.summary;
+          }
+        }
+
+        if (res) {
+          setCurrentCard(createCard(currentTool, { value, label: res.label, content: displayContent }));
         } else {
           setError("Ingen data fundet.");
           setCurrentCard(null);
