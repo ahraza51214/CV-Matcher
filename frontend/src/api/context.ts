@@ -23,6 +23,7 @@ export type ContextSummary = {
   optionId: string;
   summary: string;
 };
+
 const BASE_URL = import.meta.env.VITE_CONTEXT_API_URL;
 const ENABLED = import.meta.env.VITE_CONTEXT_API_ENABLED === "true";
 

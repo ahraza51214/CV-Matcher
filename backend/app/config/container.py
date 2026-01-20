@@ -6,7 +6,7 @@ from ..services.providers.claude_provider import ClaudeLlmEvaluator
 from ..services.providers.fusion_provider import FusionLlmEvaluator
 from ..services.evaluator.evaluate_match import EvaluateMatchUseCase
 from ..services.evaluator.evaluate_tool_resonance import EvaluateToolResonanceUseCase
-from ..services.tools import DummyToolAdapter
+from ..services.toolAdapters import DummyToolAdapter
 
 def build_use_case(provider_override: str | None = None) -> EvaluateMatchUseCase:
     """Select concrete provider based on request or .env."""
