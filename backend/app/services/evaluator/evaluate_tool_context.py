@@ -2,7 +2,7 @@
 Use-case: summarize tool-provided context (e.g., selected option content) for downstream use.
 This keeps tool prompting separate from job-matching prompts.
 """
-from ..ports import LlmEvaluatorPort
+from ...domain.ports import LlmEvaluatorPort
 from ...services.prompts.contextExplorerTool.context_prompt import CONTEXT_SYS, context_user
 
 

@@ -2,7 +2,11 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Query
 from ..services.readers.factory import read_any
 from ..domain.models import EvaluationRequest
-from ..config.container import build_use_case
+from ..config.container import (
+    build_use_case,
+    build_tool_context_use_case,
+    build_tool_resonance_use_case,
+)
 from .schemas import ToolSchema, ToolOptionSchema, ToolContentSchema
 from ..services.context.data import list_tools, list_options, get_content
 
@@ -69,4 +73,75 @@ async def get_tool_option_content(tool_id: str, option_id: str):
         "label": content["label"],
         "aiRendered": content.get("content"),
         "raw": content,
+    }
+
+
+@router.post("/tools/{tool_id}/options/{option_id}/summary")
+async def summarize_tool_option(
+    tool_id: str,
+    option_id: str,
+    provider: str | None = Query(None, description="Provider to use for summarization"),
+):
+    """
+    Summarize a tool option's content via the LLM so the frontend doesn't need raw provider access.
+    """
+    content = get_content(tool_id, option_id)
+    if not content:
+        raise HTTPException(404, detail="Option not found")
+
+    # Normalize provider names to concrete evaluators.
+    aliases = {
+        "chatgpt": "ChatGPT",
+        "openai": "ChatGPT",
+        "gemini": "Gemini",
+        "claude": "Claude",
+        "fusion": "Fusion",
+    }
+    normalized_provider = aliases.get(provider.lower()) if provider else None
+
+    use_case = build_tool_context_use_case(provider_override=normalized_provider)
+    summary = await use_case(content["label"], content.get("content") or "")
+    return {
+        "toolId": tool_id,
+        "optionId": option_id,
+        "summary": summary,
+    }
+
+
+@router.post("/tools/{tool_id}/options/{option_id}/resonance")
+async def resonate_tool_option(
+    tool_id: str,
+    option_id: str,
+    jd_text: str,
+    match_score: int,
+    provider: str | None = Query(None, description="Provider to use for resonance summary"),
+):
+    """
+    Produce a <=50 word summary relating tool content to the JD and existing match score.
+    This does not alter the score; it only generates display text.
+    """
+    content = get_content(tool_id, option_id)
+    if not content:
+        raise HTTPException(404, detail="Option not found")
+
+    aliases = {
+        "chatgpt": "ChatGPT",
+        "openai": "ChatGPT",
+        "gemini": "Gemini",
+        "claude": "Claude",
+        "fusion": "Fusion",
+    }
+    normalized_provider = aliases.get(provider.lower()) if provider else None
+
+    use_case = build_tool_resonance_use_case(provider_override=normalized_provider)
+    summary = await use_case(
+        jd_text=jd_text,
+        match_score=match_score,
+        tool_label=content["label"],
+        content=content.get("content") or "",
+    )
+    return {
+        "toolId": tool_id,
+        "optionId": option_id,
+        "summary": summary,
     }

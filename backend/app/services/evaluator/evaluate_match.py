@@ -1,5 +1,5 @@
 from ...domain.models import EvaluationRequest, EvaluationResult
-from ..ports import LlmEvaluatorPort
+from ...domain.ports import LlmEvaluatorPort
 from ...services.prompts.jobMatcher.fallback_eval import SIMPLE_SYS, simple_user
 from ...services.prompts.jobMatcher.chatgpt_eval import CHATGPT_SYS, chatgpt_user
 from ...services.prompts.jobMatcher.gemini_eval import GEMINI_SYS, gemini_user
