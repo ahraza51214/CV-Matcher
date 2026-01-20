@@ -23,7 +23,6 @@ export type ContextSummary = {
   optionId: string;
   summary: string;
 };
-
 const BASE_URL = import.meta.env.VITE_CONTEXT_API_URL;
 const ENABLED = import.meta.env.VITE_CONTEXT_API_ENABLED === "true";
 
@@ -51,11 +50,6 @@ export async function fetchOptions(toolId: ToolId): Promise<ContextOption[]> {
 
 export async function fetchContent(toolId: ToolId, optionId: string): Promise<ContextContent | null> {
   const live = await safeFetch<ContextContent>(`/tools/${toolId}/options/${optionId}`);
-  return live;
-}
-
-export async function fetchSummary(toolId: ToolId, optionId: string): Promise<ContextSummary | null> {
-  const live = await safeFetch<ContextSummary>(`/tools/${toolId}/options/${optionId}/summary`);
   return live;
 }
 

@@ -5,7 +5,6 @@ from ..services.providers.gemini_provider import GeminiLlmEvaluator
 from ..services.providers.claude_provider import ClaudeLlmEvaluator
 from ..services.providers.fusion_provider import FusionLlmEvaluator
 from ..services.evaluator.evaluate_match import EvaluateMatchUseCase
-from ..services.evaluator.evaluate_tool_context import EvaluateToolContextUseCase
 from ..services.evaluator.evaluate_tool_resonance import EvaluateToolResonanceUseCase
 from ..services.tools import DummyToolAdapter
 
@@ -14,12 +13,6 @@ def build_use_case(provider_override: str | None = None) -> EvaluateMatchUseCase
     provider = (provider_override or settings.provider).lower()
     evaluator = _select_evaluator(provider)
     return EvaluateMatchUseCase(evaluator=evaluator, provider=provider)
-
-def build_tool_context_use_case(provider_override: str | None = None) -> EvaluateToolContextUseCase:
-    """Factory for summarizing tool context via LLM; defaults to env provider."""
-    provider = (provider_override or settings.provider).lower()
-    evaluator = _select_evaluator(provider)
-    return EvaluateToolContextUseCase(evaluator=evaluator)
 
 def build_tool_resonance_use_case(provider_override: str | None = None) -> EvaluateToolResonanceUseCase:
     """Factory for resonating tool context with JD+score without changing the score."""
