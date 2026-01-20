@@ -439,7 +439,7 @@ textarea{
 }
 
 .integration-panel__text{
-  margin: 0;
+  margin: 8px 0 0;
   line-height: 1.6;
 }
 
@@ -516,8 +516,9 @@ textarea{
   border: 1px solid rgba(86, 207, 137, 0.8);
   background: rgba(86, 207, 137, 0.14);
   color: #b5f3d2;
-  padding: 6px 12px;
-  border-radius: 10px;
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
   cursor: pointer;
   transition: border-color .2s ease, color .2s ease, background .2s ease;
 }
@@ -534,8 +535,9 @@ textarea{
   border: 1px solid rgba(255, 118, 118, 0.85);
   background: linear-gradient(135deg, rgba(255,118,118,0.24), rgba(255,71,87,0.18));
   color: #ffe1e1;
-  padding: 6px 10px;
-  border-radius: 10px;
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 999px;
   cursor: pointer;
   transition: border-color .2s ease, color .2s ease, background .2s ease;
 }
