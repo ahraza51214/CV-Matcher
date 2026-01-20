@@ -8,6 +8,7 @@ CLAUDE_SYS = (
 )
 
 def claude_user(cv_text: str, jd_text: str) -> str:
+    """Build the Claude-friendly user prompt without extra context."""
     cv_text = (cv_text or "")
     jd_text = (jd_text or "")
     return f"""

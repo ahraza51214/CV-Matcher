@@ -30,6 +30,7 @@ async def match(
     }
     normalized_provider = aliases.get(provider.lower()) if provider else None
 
+    # Build the evaluator with the chosen provider.
     use_case = build_use_case(provider_override=normalized_provider)
     result = await use_case(EvaluationRequest(cv_text=cv_text, jd_text=jd_text))
     return result.model_dump()

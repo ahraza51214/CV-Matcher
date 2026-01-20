@@ -1,7 +1,7 @@
 import asyncio
 from typing import Sequence, Tuple
 from ...config.settings import settings
-from ..prompts.fusion_eval import FUSION_SYS, fusion_user
+from ..prompts.jobMatcher.fusion_eval import FUSION_SYS, fusion_user
 from .openai_provider import OpenAILlmEvaluator
 from .gemini_provider import GeminiLlmEvaluator
 from .claude_provider import ClaudeLlmEvaluator

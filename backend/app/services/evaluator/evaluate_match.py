@@ -1,9 +1,9 @@
 from ...domain.models import EvaluationRequest, EvaluationResult
-from ...domain.ports import LlmEvaluatorPort
-from ...services.prompts.fallback_eval import SIMPLE_SYS, simple_user
-from ...services.prompts.chatgpt_eval import CHATGPT_SYS, chatgpt_user
-from ...services.prompts.gemini_eval import GEMINI_SYS, gemini_user
-from ...services.prompts.claude_eval import CLAUDE_SYS, claude_user
+from ..ports import LlmEvaluatorPort
+from ...services.prompts.jobMatcher.fallback_eval import SIMPLE_SYS, simple_user
+from ...services.prompts.jobMatcher.chatgpt_eval import CHATGPT_SYS, chatgpt_user
+from ...services.prompts.jobMatcher.gemini_eval import GEMINI_SYS, gemini_user
+from ...services.prompts.jobMatcher.claude_eval import CLAUDE_SYS, claude_user
 
 class EvaluateMatchUseCase:
     """
@@ -20,6 +20,7 @@ class EvaluateMatchUseCase:
 
     async def __call__(self, req: EvaluationRequest) -> EvaluationResult:
         system, user_fn = self._prompt_for_provider()
+        # Build the provider-specific prompt for CV + JD only; tool context is handled elsewhere.
         data = await self._evaluator.eval_json(
             system=system,
             user=user_fn(req.cv_text, req.jd_text),

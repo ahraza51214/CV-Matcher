@@ -8,6 +8,7 @@ GEMINI_SYS = (
 )
 
 def gemini_user(cv_text: str, jd_text: str) -> str:
+    """Build the Gemini-friendly user prompt without extra context."""
     cv_text = (cv_text or "")
     jd_text = (jd_text or "")
     return f"""
